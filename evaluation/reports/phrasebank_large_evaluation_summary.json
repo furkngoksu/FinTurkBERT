@@ -1,0 +1,1059 @@
+{
+  "dataset": "data/phrasebank_viewpoint_synthetic_large.jsonl",
+  "cache_dir": "models",
+  "overall": {
+    "count": 1050,
+    "accuracy": 0.6724,
+    "macro_f1": 0.6505,
+    "per_class": {
+      "negative": {
+        "precision": 1.0,
+        "recall": 0.3486,
+        "f1": 0.5169,
+        "support": 350
+      },
+      "neutral": {
+        "precision": 0.6019,
+        "recall": 0.8943,
+        "f1": 0.7195,
+        "support": 350
+      },
+      "positive": {
+        "precision": 0.6642,
+        "recall": 0.7743,
+        "f1": 0.715,
+        "support": 350
+      }
+    },
+    "confusion_matrix": {
+      "negative": {
+        "negative": 122,
+        "neutral": 128,
+        "positive": 100
+      },
+      "neutral": {
+        "negative": 0,
+        "neutral": 313,
+        "positive": 37
+      },
+      "positive": {
+        "negative": 0,
+        "neutral": 79,
+        "positive": 271
+      }
+    }
+  },
+  "by_difficulty": {
+    "clear": {
+      "count": 600,
+      "accuracy": 0.8683,
+      "macro_f1": 0.8945,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 100
+        },
+        "neutral": {
+          "precision": 0.7168,
+          "recall": 1.0,
+          "f1": 0.8351,
+          "support": 200
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 0.7367,
+          "f1": 0.8484,
+          "support": 300
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 100,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 200,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 79,
+          "positive": 221
+        }
+      }
+    },
+    "hard": {
+      "count": 250,
+      "accuracy": 0.088,
+      "macro_f1": 0.1618,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 0.088,
+          "f1": 0.1618,
+          "support": 250
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 22,
+          "neutral": 128,
+          "positive": 100
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "nuanced": {
+      "count": 200,
+      "accuracy": 0.815,
+      "macro_f1": 0.7946,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 0.7533,
+          "f1": 0.8593,
+          "support": 150
+        },
+        "positive": {
+          "precision": 0.5747,
+          "recall": 1.0,
+          "f1": 0.7299,
+          "support": 50
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 113,
+          "positive": 37
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 50
+        }
+      }
+    }
+  },
+  "by_category": {
+    "açık borçluluk azalması": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 50
+        }
+      }
+    },
+    "açık hissedar getirisi": {
+      "count": 50,
+      "accuracy": 0.0,
+      "macro_f1": 0.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 50
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 50,
+          "positive": 0
+        }
+      }
+    },
+    "açık kapasite artışı": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 50
+        }
+      }
+    },
+    "açık kredi notu iyileşmesi": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 50
+        }
+      }
+    },
+    "açık kâr artışı": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 50
+        }
+      }
+    },
+    "açık kâr düşüşü uyarısı": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 50,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "açık marj iyileşmesi": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 50
+        }
+      }
+    },
+    "açık sözleşme kazanımı": {
+      "count": 50,
+      "accuracy": 0.42,
+      "macro_f1": 0.5915,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 0.42,
+          "f1": 0.5915,
+          "support": 50
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 29,
+          "positive": 21
+        }
+      }
+    },
+    "açık üretim duruşu ve ceza": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 50,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "bağlayıcı olmayan değerlendirme": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 50,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "belirsiz kurumsal iyimserlik": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 50,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "finansal etkisiz hukuki süreç güncellemesi": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 50,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "finansal etkisiz yönetim değişimi": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 50,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "koşulları değişmeyen finansman yenilemesi": {
+      "count": 50,
+      "accuracy": 0.26,
+      "macro_f1": 0.4127,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 0.26,
+          "f1": 0.4127,
+          "support": 50
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 13,
+          "positive": 37
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "olumlu dille bedelli sermaye artırımı": {
+      "count": 50,
+      "accuracy": 0.0,
+      "macro_f1": 0.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 50
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 50
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "olumlu dille değer düşüklüğü": {
+      "count": 50,
+      "accuracy": 0.02,
+      "macro_f1": 0.0392,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 0.02,
+          "f1": 0.0392,
+          "support": 50
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 1,
+          "neutral": 49,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "olumlu dille likidite baskısı": {
+      "count": 50,
+      "accuracy": 0.0,
+      "macro_f1": 0.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 50
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 50
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "olumlu dille sözleşme kaybı": {
+      "count": 50,
+      "accuracy": 0.42,
+      "macro_f1": 0.5915,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 0.42,
+          "f1": 0.5915,
+          "support": 50
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 21,
+          "neutral": 29,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "olumlu dille temettü iptali": {
+      "count": 50,
+      "accuracy": 0.0,
+      "macro_f1": 0.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 50
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 50,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "prosedürel bildirim": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 50,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "rutin rapor yayımlama": {
+      "count": 50,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 50
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 50,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    }
+  },
+  "mismatch_count": 344
+}

@@ -1,0 +1,891 @@
+{
+  "dataset": "data/finturkbert_benchmark.jsonl",
+  "cache_dir": "models",
+  "overall": {
+    "count": 360,
+    "accuracy": 0.7611,
+    "macro_f1": 0.7517,
+    "per_class": {
+      "negative": {
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6667,
+        "support": 120
+      },
+      "neutral": {
+        "precision": 0.6552,
+        "recall": 0.95,
+        "f1": 0.7755,
+        "support": 120
+      },
+      "positive": {
+        "precision": 0.7937,
+        "recall": 0.8333,
+        "f1": 0.813,
+        "support": 120
+      }
+    },
+    "confusion_matrix": {
+      "negative": {
+        "negative": 60,
+        "neutral": 40,
+        "positive": 20
+      },
+      "neutral": {
+        "negative": 0,
+        "neutral": 114,
+        "positive": 6
+      },
+      "positive": {
+        "negative": 0,
+        "neutral": 20,
+        "positive": 100
+      }
+    }
+  },
+  "by_difficulty": {
+    "clear": {
+      "count": 280,
+      "accuracy": 0.7143,
+      "macro_f1": 0.6996,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 0.4,
+          "f1": 0.5714,
+          "support": 100
+        },
+        "neutral": {
+          "precision": 0.5714,
+          "recall": 1.0,
+          "f1": 0.7273,
+          "support": 80
+        },
+        "positive": {
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8,
+          "support": 100
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 40,
+          "neutral": 40,
+          "positive": 20
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 80,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 20,
+          "positive": 80
+        }
+      }
+    },
+    "nuanced": {
+      "count": 80,
+      "accuracy": 0.925,
+      "macro_f1": 0.9295,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 0.85,
+          "f1": 0.9189,
+          "support": 40
+        },
+        "positive": {
+          "precision": 0.7692,
+          "recall": 1.0,
+          "f1": 0.8696,
+          "support": 20
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 20,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 34,
+          "positive": 6
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 20
+        }
+      }
+    }
+  },
+  "by_category": {
+    "capacity_expansion": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 20
+        }
+      }
+    },
+    "contract_loss": {
+      "count": 20,
+      "accuracy": 0.0,
+      "macro_f1": 0.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 20
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 20,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "contract_win": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 20
+        }
+      }
+    },
+    "deleveraging": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 20
+        }
+      }
+    },
+    "dividend_cut": {
+      "count": 20,
+      "accuracy": 0.0,
+      "macro_f1": 0.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 20
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 20,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "earnings_upgrade": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 20
+        }
+      }
+    },
+    "earnings_warning": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 20,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "general_assembly_notice": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 20,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "investment_review": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 20,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "legal_process_update": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 20,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "liquidity_pressure": {
+      "count": 20,
+      "accuracy": 0.0,
+      "macro_f1": 0.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 20
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 20
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "loan_renewal_unchanged": {
+      "count": 20,
+      "accuracy": 0.7,
+      "macro_f1": 0.8235,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 0.7,
+          "f1": 0.8235,
+          "support": 20
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 14,
+          "positive": 6
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "management_change": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 20,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "margin_improvement": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 20
+        }
+      }
+    },
+    "margin_pressure": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 20,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "routine_filing": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 20,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    },
+    "shareholder_return": {
+      "count": 20,
+      "accuracy": 0.0,
+      "macro_f1": 0.0,
+      "per_class": {
+        "negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 20
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 20,
+          "positive": 0
+        }
+      }
+    },
+    "shutdown_and_fine": {
+      "count": 20,
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "per_class": {
+        "negative": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 20
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "negative": {
+          "negative": 20,
+          "neutral": 0,
+          "positive": 0
+        },
+        "neutral": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        },
+        "positive": {
+          "negative": 0,
+          "neutral": 0,
+          "positive": 0
+        }
+      }
+    }
+  },
+  "mismatch_count": 86
+}

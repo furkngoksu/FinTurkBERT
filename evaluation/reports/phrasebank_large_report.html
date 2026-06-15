@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FinTurkBERT Değerlendirme Raporu</title>
+  <style>
+    :root {
+      --bg: #f3efe4;
+      --panel: #fffdf8;
+      --panel-border: #d9d4c7;
+      --ink: #172033;
+      --muted: #5f6b85;
+      --accent: #1d4ed8;
+      --positive: #15803d;
+      --neutral: #0f766e;
+      --negative: #c2410c;
+      --warn: #b91c1c;
+      --shadow: 0 20px 50px rgba(23, 32, 51, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--ink);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(29, 78, 216, 0.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(21, 128, 61, 0.08), transparent 24%),
+        linear-gradient(180deg, #f6f2e8 0%, #f1ecdf 100%);
+    }
+    .shell {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 36px 24px 64px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+    .hero-main {
+      padding: 28px;
+      min-height: 240px;
+      background:
+        linear-gradient(135deg, rgba(29, 78, 216, 0.10), rgba(255, 255, 255, 0)),
+        linear-gradient(160deg, rgba(21, 128, 61, 0.10), rgba(255, 255, 255, 0));
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(29, 78, 216, 0.08);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 18px 0 8px;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+    .sub {
+      margin: 0;
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .badge {
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--panel-border);
+      background: rgba(255, 255, 255, 0.75);
+    }
+    .hero-side {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        linear-gradient(180deg, rgba(194, 65, 12, 0.08), rgba(255, 255, 255, 0)),
+        linear-gradient(160deg, rgba(15, 118, 110, 0.10), rgba(255, 255, 255, 0));
+    }
+    .hero-side h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+    .hero-side ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .metric {
+      padding: 22px;
+      min-height: 132px;
+    }
+    .metric-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .metric-value {
+      margin-top: 12px;
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 700;
+      word-break: break-word;
+    }
+    .metric-note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .panel {
+      padding: 22px;
+    }
+    .panel h3 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+    .panel p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+    }
+    .table-wrap table {
+      min-width: 560px;
+    }
+    .table-wrap.wide table {
+      min-width: 920px;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid #ece7da;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .text-cell {
+      max-width: 720px;
+      line-height: 1.5;
+    }
+    .svg-frame img,
+    .svg-frame svg {
+      width: 100%;
+      display: block;
+      border-radius: 22px;
+      border: 1px solid var(--panel-border);
+      background: #fffdf8;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .section-title {
+      margin: 28px 0 12px;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+    }
+    .footer-note {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    @media (max-width: 1040px) {
+      .hero, .grid-cards, .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 720px) {
+      .shell {
+        padding: 18px 12px 42px;
+      }
+      .card {
+        border-radius: 20px;
+      }
+      .hero-main, .hero-side, .panel, .metric {
+        padding: 16px;
+      }
+      h1 {
+        font-size: clamp(28px, 9vw, 40px);
+        line-height: 1;
+      }
+      .sub {
+        font-size: 14px;
+      }
+      .badge {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+      .metric-value {
+        font-size: 24px;
+      }
+      .panel h3 {
+        font-size: 17px;
+      }
+      .svg-frame img,
+      .svg-frame svg {
+        border-radius: 16px;
+      }
+      th, td {
+        padding: 10px 8px;
+      }
+      .text-cell {
+        min-width: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="card hero-main">
+        <div class="eyebrow">FinTurkBERT yerel benchmark</div>
+        <h1>Türkçe finansal sentiment sınıflandırması davranış raporu</h1>
+        <p class="sub">
+          Bu dashboard, yerelde cache'lenen <code>ff112/FinTurkBERT</code> checkpoint'inin yatırımcı bakış açısıyla hazırlanmış dengeli bir sentetik Türkçe finans benchmark'ında nasıl davrandığını özetler.
+        </p>
+        <div class="badge-row">
+          <div class="badge">Accuracy 67.2%</div>
+          <div class="badge">Macro-F1 0.6505</div>
+          <div class="badge">Hata 344</div>
+          <div class="badge">Offline cache doğrulandı</div>
+        </div>
+      </div>
+      <div class="card hero-side">
+        <div>
+          <h2>Ana Bulgular</h2>
+          <ul><li>Genel benchmark sonucu 1050 sentetik finans örneğinde 67.2% accuracy ve 0.6505 macro-F1.</li><li>En zayıf sınıf negative; recall değeri 0.3486. Bu, modelin güçlü negatif sinyal vermekten kaçınan muhafazakar yapısıyla uyumlu.</li><li>En zayıf senaryo türleri açık hissedar getirisi, olumlu dille bedelli sermaye artırımı, olumlu dille likidite baskısı, olumlu dille temettü iptali. Bunlar downstream kullanımda yüksek riskli iş kalıpları olarak görülmeli.</li><li>En sık hata geçişi negative → neutral; toplam 128 örnek.</li><li>Bu benchmark sentetik ve kural tabanlıdır; yayın kalitesinde resmi benchmark yerine yerel smoke test ve davranış analizi için kullanılmalıdır.</li></ul>
+        </div>
+        <div class="footer-note">
+          <code>data/phrasebank_viewpoint_synthetic_large.jsonl</code> kaynağından üretildi. Kullanılan yerel cache: <code>models</code>.
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-cards">
+      <div class="card metric"><div class="metric-title">Örnek Sayısı</div><div class="metric-value">1050</div><div class="metric-note">Dengeli sentetik benchmark</div></div><div class="card metric"><div class="metric-title">Accuracy</div><div class="metric-value">67.2%</div><div class="metric-note">Genel doğru tahmin oranı</div></div><div class="card metric"><div class="metric-title">Macro-F1</div><div class="metric-value">0.6505</div><div class="metric-note">Sınıf ortalama F1 skoru</div></div><div class="card metric"><div class="metric-title">Mismatch</div><div class="metric-value">344</div><div class="metric-note">Ground truth ile uyuşmayan satırlar</div></div>
+    </section>
+
+    <section class="two-col">
+      <div class="card panel">
+        <h3>Karmaşıklık Matrisi</h3>
+        <div class="svg-frame">
+          <svg viewBox="0 0 416 376" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Confusion matrix"><rect x="0" y="0" width="416" height="376" rx="24" fill="#fffdf8" stroke="#d9d4c7" stroke-width="1.2"/><text x="120" y="32" fill="#172033" font-size="18" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">Karmaşıklık Matrisi</text><text x="166.0" y="52" text-anchor="middle" fill="#5f6b85" font-size="13" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">negative</text><text x="106" y="120.0" text-anchor="end" fill="#5f6b85" font-size="13" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">negative</text><text x="258.0" y="52" text-anchor="middle" fill="#5f6b85" font-size="13" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">neutral</text><text x="106" y="212.0" text-anchor="end" fill="#5f6b85" font-size="13" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">neutral</text><text x="350.0" y="52" text-anchor="middle" fill="#5f6b85" font-size="13" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">positive</text><text x="106" y="304.0" text-anchor="end" fill="#5f6b85" font-size="13" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">positive</text><rect x="120" y="70" width="84" height="84" rx="16" fill="rgba(21, 128, 61, 0.468)" stroke="#ffffff" stroke-width="1.5"/><text x="162.0" y="108" text-anchor="middle" fill="#172033" font-size="26" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">122</text><text x="162.0" y="132" text-anchor="middle" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">39.0%</text><rect x="212" y="70" width="84" height="84" rx="16" fill="rgba(185, 28, 28, 0.304)" stroke="#ffffff" stroke-width="1.5"/><text x="254.0" y="108" text-anchor="middle" fill="#172033" font-size="26" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">128</text><text x="254.0" y="132" text-anchor="middle" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">40.9%</text><rect x="304" y="70" width="84" height="84" rx="16" fill="rgba(185, 28, 28, 0.264)" stroke="#ffffff" stroke-width="1.5"/><text x="346.0" y="108" text-anchor="middle" fill="#172033" font-size="26" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">100</text><text x="346.0" y="132" text-anchor="middle" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">31.9%</text><rect x="120" y="162" width="84" height="84" rx="16" fill="#f1f5f9" stroke="#ffffff" stroke-width="1.5"/><text x="162.0" y="200" text-anchor="middle" fill="#172033" font-size="26" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">0</text><text x="162.0" y="224" text-anchor="middle" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.0%</text><rect x="212" y="162" width="84" height="84" rx="16" fill="rgba(21, 128, 61, 0.920)" stroke="#ffffff" stroke-width="1.5"/><text x="254.0" y="200" text-anchor="middle" fill="#172033" font-size="26" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">313</text><text x="254.0" y="224" text-anchor="middle" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><rect x="304" y="162" width="84" height="84" rx="16" fill="rgba(185, 28, 28, 0.173)" stroke="#ffffff" stroke-width="1.5"/><text x="346.0" y="200" text-anchor="middle" fill="#172033" font-size="26" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">37</text><text x="346.0" y="224" text-anchor="middle" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">11.8%</text><rect x="120" y="254" width="84" height="84" rx="16" fill="#f1f5f9" stroke="#ffffff" stroke-width="1.5"/><text x="162.0" y="292" text-anchor="middle" fill="#172033" font-size="26" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">0</text><text x="162.0" y="316" text-anchor="middle" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.0%</text><rect x="212" y="254" width="84" height="84" rx="16" fill="rgba(185, 28, 28, 0.234)" stroke="#ffffff" stroke-width="1.5"/><text x="254.0" y="292" text-anchor="middle" fill="#172033" font-size="26" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">79</text><text x="254.0" y="316" text-anchor="middle" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">25.2%</text><rect x="304" y="254" width="84" height="84" rx="16" fill="rgba(21, 128, 61, 0.821)" stroke="#ffffff" stroke-width="1.5"/><text x="346.0" y="292" text-anchor="middle" fill="#172033" font-size="26" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">271</text><text x="346.0" y="316" text-anchor="middle" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">86.6%</text></svg>
+        </div>
+        <p>Model, rutin nötr bildirimlerde ve açık pozitif iş gelişmelerinde en güçlü performansı gösteriyor. Ana hata deseni ise bazı negatif ve pozitif örneklerin muhafazakar biçimde nötre çökmesi.</p>
+      </div>
+      <div class="card panel">
+        <h3>Sınıf Bazlı Metrikler</h3>
+        <div class="svg-frame">
+          <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Per-class precision recall F1"><rect x="0" y="0" width="760" height="360" rx="24" fill="#fffdf8" stroke="#d9d4c7" stroke-width="1.2"/><text x="70" y="30" fill="#172033" font-size="18" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">Sınıf Bazlı Precision / Recall / F1</text><line x1="70" y1="276.0" x2="730" y2="276.0" stroke="#e8e4d8" stroke-width="1"/><text x="58" y="280.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.0%</text><line x1="70" y1="232.0" x2="730" y2="232.0" stroke="#e8e4d8" stroke-width="1"/><text x="58" y="236.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">20.0%</text><line x1="70" y1="188.0" x2="730" y2="188.0" stroke="#e8e4d8" stroke-width="1"/><text x="58" y="192.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">40.0%</text><line x1="70" y1="144.0" x2="730" y2="144.0" stroke="#e8e4d8" stroke-width="1"/><text x="58" y="148.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">60.0%</text><line x1="70" y1="100.0" x2="730" y2="100.0" stroke="#e8e4d8" stroke-width="1"/><text x="58" y="104.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">80.0%</text><line x1="70" y1="56.0" x2="730" y2="56.0" stroke="#e8e4d8" stroke-width="1"/><text x="58" y="60.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="148" y="304" text-anchor="middle" fill="#172033" font-size="14" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="600">negative</text><rect x="110" y="56.0" width="28" height="220.0" rx="10" fill="#1d4ed8"/><text x="124.0" y="52" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">1.0000</text><text x="124.0" y="322" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">precision</text><rect x="148" y="199.308" width="28" height="76.69200000000001" rx="10" fill="#d97706"/><text x="162.0" y="191.308" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.3486</text><text x="162.0" y="322" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">recall</text><rect x="186" y="162.28199999999998" width="28" height="113.718" rx="10" fill="#7c3aed"/><text x="200.0" y="154.28199999999998" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.5169</text><text x="200.0" y="322" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">f1</text><text x="333" y="304" text-anchor="middle" fill="#172033" font-size="14" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="600">neutral</text><rect x="295" y="143.582" width="28" height="132.418" rx="10" fill="#1d4ed8"/><text x="309.0" y="135.582" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.6019</text><text x="309.0" y="322" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">precision</text><rect x="333" y="79.25399999999999" width="28" height="196.746" rx="10" fill="#d97706"/><text x="347.0" y="71.25399999999999" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.8943</text><text x="347.0" y="322" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">recall</text><rect x="371" y="117.70999999999998" width="28" height="158.29000000000002" rx="10" fill="#7c3aed"/><text x="385.0" y="109.70999999999998" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.7195</text><text x="385.0" y="322" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">f1</text><text x="518" y="304" text-anchor="middle" fill="#172033" font-size="14" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="600">positive</text><rect x="480" y="129.876" width="28" height="146.124" rx="10" fill="#1d4ed8"/><text x="494.0" y="121.876" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.6642</text><text x="494.0" y="322" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">precision</text><rect x="518" y="105.654" width="28" height="170.346" rx="10" fill="#d97706"/><text x="532.0" y="97.654" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.7743</text><text x="532.0" y="322" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">recall</text><rect x="556" y="118.70000000000002" width="28" height="157.29999999999998" rx="10" fill="#7c3aed"/><text x="570.0" y="110.70000000000002" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.7150</text><text x="570.0" y="322" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">f1</text></svg>
+        </div>
+        <div class="legend">
+          <span><i class="dot" style="background:#1d4ed8"></i> Precision</span>
+          <span><i class="dot" style="background:#d97706"></i> Recall</span>
+          <span><i class="dot" style="background:#7c3aed"></i> F1</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <div class="card panel">
+        <h3>En Zayıf Senaryo Türleri</h3>
+        <div class="svg-frame">
+          <svg viewBox="0 0 900 668" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Category accuracy"><rect x="0" y="0" width="900" height="668" rx="24" fill="#fffdf8" stroke="#d9d4c7" stroke-width="1.2"/><text x="24" y="30" fill="#172033" font-size="18" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">Senaryo Türüne Göre Accuracy</text><text x="200" y="66" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">açık hissedar getirisi</text><rect x="210" y="52" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="52" width="2" height="16" rx="8" fill="#b91c1c"/><text x="868" y="66" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.0%</text><text x="200" y="94" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">olumlu dille bedelli sermaye artırımı</text><rect x="210" y="80" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="80" width="2" height="16" rx="8" fill="#b91c1c"/><text x="868" y="94" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.0%</text><text x="200" y="122" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">olumlu dille likidite baskısı</text><rect x="210" y="108" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="108" width="2" height="16" rx="8" fill="#b91c1c"/><text x="868" y="122" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.0%</text><text x="200" y="150" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">olumlu dille temettü iptali</text><rect x="210" y="136" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="136" width="2" height="16" rx="8" fill="#b91c1c"/><text x="868" y="150" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0.0%</text><text x="200" y="178" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">olumlu dille değer düşüklüğü</text><rect x="210" y="164" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="164" width="13.0" height="16" rx="8" fill="#b91c1c"/><text x="868" y="178" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">2.0%</text><text x="200" y="206" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">koşulları değişmeyen finansman yenilemesi</text><rect x="210" y="192" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="192" width="169.0" height="16" rx="8" fill="#b91c1c"/><text x="868" y="206" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">26.0%</text><text x="200" y="234" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">açık sözleşme kazanımı</text><rect x="210" y="220" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="220" width="273.0" height="16" rx="8" fill="#b91c1c"/><text x="868" y="234" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">42.0%</text><text x="200" y="262" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">olumlu dille sözleşme kaybı</text><rect x="210" y="248" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="248" width="273.0" height="16" rx="8" fill="#b91c1c"/><text x="868" y="262" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">42.0%</text><text x="200" y="290" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">açık borçluluk azalması</text><rect x="210" y="276" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="276" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="290" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="318" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">açık kapasite artışı</text><rect x="210" y="304" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="304" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="318" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="346" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">açık kredi notu iyileşmesi</text><rect x="210" y="332" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="332" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="346" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="374" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">açık kâr artışı</text><rect x="210" y="360" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="360" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="374" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="402" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">açık kâr düşüşü uyarısı</text><rect x="210" y="388" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="388" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="402" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="430" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">açık marj iyileşmesi</text><rect x="210" y="416" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="416" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="430" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="458" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">açık üretim duruşu ve ceza</text><rect x="210" y="444" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="444" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="458" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="486" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">bağlayıcı olmayan değerlendirme</text><rect x="210" y="472" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="472" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="486" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="514" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">belirsiz kurumsal iyimserlik</text><rect x="210" y="500" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="500" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="514" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="542" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">finansal etkisiz hukuki süreç güncellemesi</text><rect x="210" y="528" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="528" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="542" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="570" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">finansal etkisiz yönetim değişimi</text><rect x="210" y="556" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="556" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="570" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="598" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">prosedürel bildirim</text><rect x="210" y="584" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="584" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="598" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text><text x="200" y="626" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">rutin rapor yayımlama</text><rect x="210" y="612" width="650" height="16" rx="8" fill="#ece7da"/><rect x="210" y="612" width="650.0" height="16" rx="8" fill="#15803d"/><text x="868" y="626" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100.0%</text></svg>
+        </div>
+        <p>Senaryo bazlı accuracy, genel headline metriklerde görünmeyen hata kümelerini açığa çıkarır. Aşağıda accuracy'si sıfır olan türler iyileştirme açısından en yüksek öncelikli alanlardır.</p>
+      </div>
+      <div class="card panel">
+        <h3>Sınıf Dağılımı</h3>
+        <div class="svg-frame">
+          <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Class distribution"><rect x="0" y="0" width="760" height="360" rx="24" fill="#fffdf8" stroke="#d9d4c7" stroke-width="1.2"/><text x="78" y="30" fill="#172033" font-size="18" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">Sınıf Dağılımı: Gerçek vs Tahmin</text><line x1="78" y1="276.0" x2="730" y2="276.0" stroke="#e8e4d8" stroke-width="1"/><text x="66" y="280.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">0</text><line x1="78" y1="232.0" x2="730" y2="232.0" stroke="#e8e4d8" stroke-width="1"/><text x="66" y="236.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">104</text><line x1="78" y1="188.0" x2="730" y2="188.0" stroke="#e8e4d8" stroke-width="1"/><text x="66" y="192.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">208</text><line x1="78" y1="144.0" x2="730" y2="144.0" stroke="#e8e4d8" stroke-width="1"/><text x="66" y="148.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">312</text><line x1="78" y1="100.0" x2="730" y2="100.0" stroke="#e8e4d8" stroke-width="1"/><text x="66" y="104.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">416</text><line x1="78" y1="56.0" x2="730" y2="56.0" stroke="#e8e4d8" stroke-width="1"/><text x="66" y="60.0" text-anchor="end" fill="#5f6b85" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">520</text><text x="173.0" y="306" text-anchor="middle" fill="#172033" font-size="14" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="600">negative</text><rect x="126" y="127.9230769230769" width="40" height="148.0769230769231" rx="12" fill="#c2410c"/><rect x="180" y="224.3846153846154" width="40" height="51.61538461538461" rx="12" fill="#e2e8f0" stroke="#c2410c" stroke-width="2"/><text x="146.0" y="119.9230769230769" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">350</text><text x="200.0" y="216.3846153846154" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">122</text><text x="146.0" y="324" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">gerçek</text><text x="200.0" y="324" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">tahmin</text><text x="373.0" y="306" text-anchor="middle" fill="#172033" font-size="14" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="600">neutral</text><rect x="326" y="127.9230769230769" width="40" height="148.0769230769231" rx="12" fill="#0f766e"/><rect x="380" y="56.0" width="40" height="220.0" rx="12" fill="#e2e8f0" stroke="#0f766e" stroke-width="2"/><text x="346.0" y="119.9230769230769" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">350</text><text x="400.0" y="52" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">520</text><text x="346.0" y="324" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">gerçek</text><text x="400.0" y="324" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">tahmin</text><text x="573.0" y="306" text-anchor="middle" fill="#172033" font-size="14" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="600">positive</text><rect x="526" y="127.9230769230769" width="40" height="148.0769230769231" rx="12" fill="#15803d"/><rect x="580" y="103.38461538461539" width="40" height="172.6153846153846" rx="12" fill="#e2e8f0" stroke="#15803d" stroke-width="2"/><text x="546.0" y="119.9230769230769" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">350</text><text x="600.0" y="95.38461538461539" text-anchor="middle" fill="#172033" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">408</text><text x="546.0" y="324" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">gerçek</text><text x="600.0" y="324" text-anchor="middle" fill="#5f6b85" font-size="10" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">tahmin</text></svg>
+        </div>
+        <p>Benchmark dengeli kurulduğu için gerçek dağılım eşit. Tahmin tarafındaki kayma, modelin hangi class'a daha sık çöktüğünü hızlıca gösteriyor.</p>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <div class="card panel">
+        <h3>Hata Geçiş Profili</h3>
+        <div class="svg-frame">
+          <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mismatch transitions"><rect x="0" y="0" width="760" height="210" rx="24" fill="#fffdf8" stroke="#d9d4c7" stroke-width="1.2"/><text x="24" y="30" fill="#172033" font-size="18" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif" font-weight="700">Hata Geçiş Sayıları</text><text x="210" y="68" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">negative → neutral</text><rect x="220" y="54" width="500" height="18" rx="9" fill="#ece7da"/><rect x="220" y="54" width="500.0" height="18" rx="9" fill="#c2410c"/><text x="728.0" y="68" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">128</text><text x="210" y="102" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">negative → positive</text><rect x="220" y="88" width="500" height="18" rx="9" fill="#ece7da"/><rect x="220" y="88" width="390.625" height="18" rx="9" fill="#c2410c"/><text x="618.625" y="102" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">100</text><text x="210" y="136" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">positive → neutral</text><rect x="220" y="122" width="500" height="18" rx="9" fill="#ece7da"/><rect x="220" y="122" width="308.59375" height="18" rx="9" fill="#15803d"/><text x="536.59375" y="136" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">79</text><text x="210" y="170" text-anchor="end" fill="#172033" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">neutral → positive</text><rect x="220" y="156" width="500" height="18" rx="9" fill="#ece7da"/><rect x="220" y="156" width="144.53125" height="18" rx="9" fill="#0f766e"/><text x="372.53125" y="170" fill="#5f6b85" font-size="12" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">37</text></svg>
+        </div>
+        <p>Bu grafik, hataların en çok hangi label geçişlerinde toplandığını gösteriyor. En kritik geçişler genelde negative → neutral ve positive → neutral tarafında yoğunlaşıyor.</p>
+      </div>
+      <div class="card panel">
+        <h3>En Düşük Accuracy'li Türler</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Tür</th><th>Adet</th><th>Accuracy</th><th>Macro-F1</th><th>Baskın Hata</th></tr>
+            </thead>
+            <tbody><tr><td>açık hissedar getirisi</td><td>50</td><td>0.0%</td><td>0.0000</td><td>positive → neutral (50)</td></tr><tr><td>olumlu dille bedelli sermaye artırımı</td><td>50</td><td>0.0%</td><td>0.0000</td><td>negative → positive (50)</td></tr><tr><td>olumlu dille likidite baskısı</td><td>50</td><td>0.0%</td><td>0.0000</td><td>negative → positive (50)</td></tr><tr><td>olumlu dille temettü iptali</td><td>50</td><td>0.0%</td><td>0.0000</td><td>negative → neutral (50)</td></tr><tr><td>olumlu dille değer düşüklüğü</td><td>50</td><td>2.0%</td><td>0.0392</td><td>negative → neutral (49)</td></tr><tr><td>koşulları değişmeyen finansman yenilemesi</td><td>50</td><td>26.0%</td><td>0.4127</td><td>neutral → positive (37)</td></tr><tr><td>açık sözleşme kazanımı</td><td>50</td><td>42.0%</td><td>0.5915</td><td>positive → neutral (29)</td></tr><tr><td>olumlu dille sözleşme kaybı</td><td>50</td><td>42.0%</td><td>0.5915</td><td>negative → neutral (29)</td></tr><tr><td>açık borçluluk azalması</td><td>50</td><td>100.0%</td><td>1.0000</td><td>hata yok</td></tr><tr><td>açık kapasite artışı</td><td>50</td><td>100.0%</td><td>1.0000</td><td>hata yok</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="card panel">
+      <h3>Örnek Hatalı Tahminler</h3>
+      <div class="table-wrap wide">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Tür</th><th>Gerçek Etiket</th><th>Tahmin</th><th>Metin</th></tr>
+          </thead>
+          <tbody><tr><td>PHRASE-0008</td><td>olumlu dille değer düşüklüğü</td><td>negative</td><td>neutral</td><td class="text-cell">Sera Ambalaj, portföy sadeleştirme programı kapsamında 335 milyon TL stok ve varlık değer düşüklüğü gideri kaydettiğini açıkladı.</td></tr><tr><td>PHRASE-0010</td><td>olumlu dille bedelli sermaye artırımı</td><td>negative</td><td>positive</td><td class="text-cell">Vizyon Telekom, sermaye yapısını güçlendirmek ve büyüme esnekliğini artırmak amacıyla %95 oranında bedelli sermaye artırımı planladığını duyurdu.</td></tr><tr><td>PHRASE-0011</td><td>olumlu dille bedelli sermaye artırımı</td><td>negative</td><td>positive</td><td class="text-cell">Kuzey Madencilik, sermaye yapısını güçlendirmek ve büyüme esnekliğini artırmak amacıyla %180 oranında bedelli sermaye artırımı planladığını duyurdu.</td></tr><tr><td>PHRASE-0017</td><td>açık hissedar getirisi</td><td>positive</td><td>neutral</td><td class="text-cell">Vizyon Telekom, hisse başına 0,96 TL nakit temettü dağıtacağını ve 694 milyon TL tutarında pay geri alım programı başlatacağını açıkladı.</td></tr><tr><td>PHRASE-0019</td><td>olumlu dille değer düşüklüğü</td><td>negative</td><td>neutral</td><td class="text-cell">Güney Perakende, portföy sadeleştirme programı kapsamında 336 milyon TL stok ve varlık değer düşüklüğü gideri kaydettiğini açıkladı.</td></tr><tr><td>PHRASE-0024</td><td>koşulları değişmeyen finansman yenilemesi</td><td>neutral</td><td>positive</td><td class="text-cell">Vizyon Telekom, mevcut kredi limitini 18 ay benzer vade ve maliyet koşullarıyla yenilediğini ve işlem nedeniyle kârlılık beklentilerinde değişiklik olmadığını açıkladı.</td></tr><tr><td>PHRASE-0030</td><td>olumlu dille temettü iptali</td><td>negative</td><td>neutral</td><td class="text-cell">Lima Gayrimenkul, 2025 ikinci çeyrek sonrasında bilanço dayanıklılığını korumak amacıyla bu yıl temettü dağıtmayacağını ve yatırım harcamalarının bir bölümünü sonraki döneme kaydıracağını duyurdu.</td></tr><tr><td>PHRASE-0032</td><td>açık hissedar getirisi</td><td>positive</td><td>neutral</td><td class="text-cell">Delta Yatırım Holding, hisse başına 4,52 TL nakit temettü dağıtacağını ve 185 milyon TL tutarında pay geri alım programı başlatacağını açıkladı.</td></tr><tr><td>PHRASE-0035</td><td>olumlu dille değer düşüklüğü</td><td>negative</td><td>neutral</td><td class="text-cell">Sera Ambalaj, portföy sadeleştirme programı kapsamında 271 milyon TL stok ve varlık değer düşüklüğü gideri kaydettiğini açıkladı.</td></tr><tr><td>PHRASE-0037</td><td>olumlu dille değer düşüklüğü</td><td>negative</td><td>neutral</td><td class="text-cell">Rota Cam, portföy sadeleştirme programı kapsamında 217 milyon TL stok ve varlık değer düşüklüğü gideri kaydettiğini açıkladı.</td></tr><tr><td>PHRASE-0040</td><td>olumlu dille temettü iptali</td><td>negative</td><td>neutral</td><td class="text-cell">Lima Gayrimenkul, 2025 yıl sonu sonrasında bilanço dayanıklılığını korumak amacıyla bu yıl temettü dağıtmayacağını ve yatırım harcamalarının bir bölümünü sonraki döneme kaydıracağını duyurdu.</td></tr><tr><td>PHRASE-0042</td><td>olumlu dille değer düşüklüğü</td><td>negative</td><td>neutral</td><td class="text-cell">Nova Sağlık, portföy sadeleştirme programı kapsamında 228 milyon TL stok ve varlık değer düşüklüğü gideri kaydettiğini açıkladı.</td></tr><tr><td>PHRASE-0044</td><td>olumlu dille bedelli sermaye artırımı</td><td>negative</td><td>positive</td><td class="text-cell">Güney Perakende, sermaye yapısını güçlendirmek ve büyüme esnekliğini artırmak amacıyla %170 oranında bedelli sermaye artırımı planladığını duyurdu.</td></tr><tr><td>PHRASE-0048</td><td>koşulları değişmeyen finansman yenilemesi</td><td>neutral</td><td>positive</td><td class="text-cell">Nova Sağlık, mevcut kredi limitini 9 ay benzer vade ve maliyet koşullarıyla yenilediğini ve işlem nedeniyle kârlılık beklentilerinde değişiklik olmadığını açıkladı.</td></tr><tr><td>PHRASE-0049</td><td>koşulları değişmeyen finansman yenilemesi</td><td>neutral</td><td>positive</td><td class="text-cell">Delta Yatırım Holding, mevcut kredi limitini 6 ay benzer vade ve maliyet koşullarıyla yenilediğini ve işlem nedeniyle kârlılık beklentilerinde değişiklik olmadığını açıkladı.</td></tr></tbody>
+        </table>
+      </div>
+      <div class="footer-note">
+        Bu örnekler <code>reports/mismatches.csv</code> içinden seçildi. Mevcut model davranışının üretim akışın için kabul edilebilir olup olmadığını veya ikinci aşama kural/reviewer katmanı gerektirip gerektirmediğini görmek için yararlıdır.
+      </div>
+    </section>
+  </div>
+</body>
+</html>
