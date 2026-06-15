@@ -1,0 +1,256 @@
+================================================================================
+DEVICE INFORMATION
+================================================================================
+✓ GPU AVAILABLE: NVIDIA GeForce RTX 4060 Laptop GPU
+  CUDA Version: 12.4
+  GPU Memory: 8.59 GB
+  Device: cuda:0
+
+Output directory: models\finbert-tapt-lora-finturkbert_dapt_modelv3
+Loading datasets...
+Splitting data: 80% train, 10% val, 10% test
+Stratifying by: label + source (ensures balanced representation)
+Train samples: 6251
+Validation samples: 781
+Test samples: 782
+Loading model: finturkbert/dapt_modelv3
+Using authentication token for private model... (token starts with: hf_PGmodbY...)
+
+Loading tokenizer...
+✓ Tokenizer loaded
+
+================================================================================
+TAPT (TASK-ADAPTIVE PRE-TRAINING)
+================================================================================
+TAPT is enabled. Running MLM on task texts...
+Using 7814 texts for TAPT
+
+================================================================================
+TAPT STAGE: MASKED LANGUAGE MODELING
+================================================================================
+
+Loading base model for MLM: finturkbert/dapt_modelv3
+Training device: CUDA
+Loaded model with 110,650,880 parameters
+
+Preparing 7814 texts for MLM training...
+Tokenizing for MLM: 100%|████████████████████████████████████████████████████████████████████████████████████| 7814/7814 [00:00<00:00, 10162.73 examples/s]
+
+TAPT Configuration:
+  Epochs: 2
+  Batch size: 16
+  Learning rate: 5e-5
+  Masking probability: 15%
+
+Starting TAPT (MLM) training...
+This adapts the model to your domain-specific texts.
+
+{'loss': 1.5405, 'grad_norm': 9.758551597595215, 'learning_rate': 4.152542372881356e-05, 'epoch': 0.1}
+{'loss': 1.447, 'grad_norm': 9.004599571228027, 'learning_rate': 4.7878128400435254e-05, 'epoch': 0.2}
+{'loss': 1.4766, 'grad_norm': 10.169100761413574, 'learning_rate': 4.5157780195865075e-05, 'epoch': 0.31}
+{'loss': 1.4115, 'grad_norm': 8.143174171447754, 'learning_rate': 4.243743199129489e-05, 'epoch': 0.41}
+{'loss': 1.4701, 'grad_norm': 9.615431785583496, 'learning_rate': 3.9771490750816106e-05, 'epoch': 0.51}
+{'loss': 1.4484, 'grad_norm': 9.906909942626953, 'learning_rate': 3.705114254624592e-05, 'epoch': 0.61}
+{'loss': 1.3962, 'grad_norm': 12.857528686523438, 'learning_rate': 3.4330794341675734e-05, 'epoch': 0.72}
+{'loss': 1.3608, 'grad_norm': 8.891518592834473, 'learning_rate': 3.161044613710555e-05, 'epoch': 0.82}
+{'loss': 1.394, 'grad_norm': 7.523221015930176, 'learning_rate': 2.8890097932535365e-05, 'epoch': 0.92}
+{'loss': 1.3751, 'grad_norm': 7.307860374450684, 'learning_rate': 2.6169749727965182e-05, 'epoch': 1.02}
+{'loss': 1.3628, 'grad_norm': 10.95162582397461, 'learning_rate': 2.3449401523394996e-05, 'epoch': 1.12}
+{'loss': 1.3238, 'grad_norm': 7.054361820220947, 'learning_rate': 2.072905331882481e-05, 'epoch': 1.23}
+{'loss': 1.3124, 'grad_norm': 8.981973648071289, 'learning_rate': 1.8008705114254627e-05, 'epoch': 1.33}
+{'loss': 1.2733, 'grad_norm': 6.745235919952393, 'learning_rate': 1.528835690968444e-05, 'epoch': 1.43}
+{'loss': 1.2785, 'grad_norm': 9.207810401916504, 'learning_rate': 1.2568008705114257e-05, 'epoch': 1.53}
+{'loss': 1.2777, 'grad_norm': 10.01887321472168, 'learning_rate': 9.84766050054407e-06, 'epoch': 1.64}
+{'loss': 1.2372, 'grad_norm': 10.371597290039062, 'learning_rate': 7.127312295973885e-06, 'epoch': 1.74}
+{'loss': 1.2832, 'grad_norm': 9.421250343322754, 'learning_rate': 4.4069640914037e-06, 'epoch': 1.84}
+{'loss': 1.2719, 'grad_norm': 9.15091609954834, 'learning_rate': 1.6866158868335146e-06, 'epoch': 1.94}
+{'train_runtime': 152.2903, 'train_samples_per_second': 102.62, 'train_steps_per_second': 6.422, 'train_loss': 1.3606776996136687, 'epoch': 2.0}
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 978/978 [02:32<00:00,  6.42it/s]
+
+Saving TAPT model to: models\tapt_mlm
+✓ TAPT stage completed!
+
+✓ TAPT completed. Model saved to: models\tapt_mlm
+  This TAPT-adapted model will now be used for LoRA fine-tuning.
+  Next runs: Set 'use_existing: true' in config to skip TAPT.
+
+
+Loading model for sequence classification: models\tapt_mlm
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at models\tapt_mlm and are newly initialized: ['bert.pooler.dense.bias', 'bert.pooler.dense.weight', 'classifier.bias', 'classifier.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+✓ Model loaded successfully!
+  Model has 3 output classes (labels)
+  Model is TAPT-adapted (continued pre-training on your texts)
+Setting up LoRA...
+trainable params: 4,020,483 || all params: 114,640,134 || trainable%: 3.5070
+Tokenizing datasets...
+Map: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████| 6251/6251 [00:00<00:00, 9893.43 examples/s]
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████| 781/781 [00:00<00:00, 10366.79 examples/s]
+Map: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████| 782/782 [00:00<00:00, 11269.70 examples/s]
+C:\Users\faruk\Desktop\bert_finetune\src\train.py:319: FutureWarning: tokenizer is deprecated and will be removed in version 5.0.0 for Trainer.__init__. Use processing_class instead.
+  trainer = Trainer(
+
+================================================================================
+Starting training...
+================================================================================
+
+Metrics computed:
+  - Training loss: every 50 steps
+  - Training metrics (accuracy, F1, etc.): end of each epoch
+  - Validation metrics (accuracy, F1, etc.): end of each epoch
+
+💡 Compare train vs validation metrics to detect overfitting:
+   If train >> validation → model is overfitting
+   If train ≈ validation → model is generalizing well
+
+================================================================================
+
+{'loss': 1.0828, 'grad_norm': 6.491603374481201, 'learning_rate': 4.0833333333333334e-05, 'epoch': 0.13}
+{'loss': 0.8531, 'grad_norm': 1.9354431629180908, 'learning_rate': 8.25e-05, 'epoch': 0.26}
+{'loss': 0.641, 'grad_norm': 3.830488681793213, 'learning_rate': 9.841961852861036e-05, 'epoch': 0.38}
+{'loss': 0.5349, 'grad_norm': 4.666393756866455, 'learning_rate': 9.569482288828339e-05, 'epoch': 0.51}
+{'loss': 0.4538, 'grad_norm': 2.0721540451049805, 'learning_rate': 9.29700272479564e-05, 'epoch': 0.64}
+{'loss': 0.4384, 'grad_norm': 2.300884485244751, 'learning_rate': 9.024523160762944e-05, 'epoch': 0.77}
+{'loss': 0.4379, 'grad_norm': 2.3211517333984375, 'learning_rate': 8.752043596730246e-05, 'epoch': 0.9}
+{'eval_loss': 0.42552295327186584, 'eval_accuracy': 0.8143405889884763, 'eval_f1': 0.8143240396121596, 'eval_precision': 0.8145647126371676, 'eval_recall': 0.8143405889884763, 'eval_runtime': 1.8222, 'eval_samples_per_second': 428.607, 'eval_steps_per_second': 13.72, 'epoch': 1.0}
+ 20%|███████████████████████                                                                                            | 391/1955 [00:48<02:54,  8.96it/s]
+================================================================================
+📊 EPOCH 1 COMPLETED - METRICS COMPARISON
+================================================================================
+{'train_loss': 0.36014488339424133, 'train_accuracy': 0.8536234202527596, 'train_f1': 0.8533059233681645, 'train_precision': 0.8532358943252664, 'train_recall': 0.8536234202527596, 'train_runtime': 13.8174, 'train_samples_per_second': 452.4, 'train_steps_per_second': 14.185, 'epoch': 1.0}
+ 20%|███████████████████████                                                                                            | 391/1955 [01:02<02:54,  8.96it/s]
+Metric          Training     Validation   Difference
+-------------------------------------------------------
+Loss            0.3601       0.4255       -0.0654+++++
+Accuracy        0.8536       0.8143       0.0393++++++
+F1 Score        0.8533       0.8143       0.0390++++++
+Precision       0.8532       0.8146       0.0387++++++
+Recall          0.8536       0.8143       0.0393++++++
+
+✓ Good generalization (gap: 3.93%)
+================================================================================
+
+{'loss': 0.4714, 'grad_norm': 2.203413963317871, 'learning_rate': 8.479564032697547e-05, 'epoch': 1.02}
+{'loss': 0.4112, 'grad_norm': 7.530290126800537, 'learning_rate': 8.207084468664851e-05, 'epoch': 1.15}
+{'loss': 0.3961, 'grad_norm': 1.648471713066101, 'learning_rate': 7.934604904632152e-05, 'epoch': 1.28}
+{'loss': 0.3517, 'grad_norm': 4.95676326751709, 'learning_rate': 7.662125340599455e-05, 'epoch': 1.41}
+{'loss': 0.352, 'grad_norm': 2.680382013320923, 'learning_rate': 7.389645776566759e-05, 'epoch': 1.53}
+{'loss': 0.4055, 'grad_norm': 3.406867504119873, 'learning_rate': 7.11716621253406e-05, 'epoch': 1.66}
+{'loss': 0.3609, 'grad_norm': 2.8060507774353027, 'learning_rate': 6.844686648501362e-05, 'epoch': 1.79}
+{'loss': 0.3175, 'grad_norm': 2.2159805297851562, 'learning_rate': 6.572207084468666e-05, 'epoch': 1.92}
+{'eval_loss': 0.4097386598587036, 'eval_accuracy': 0.8450704225352113, 'eval_f1': 0.8441686722476737, 'eval_precision': 0.8461583932830166, 'eval_recall': 0.8450704225352113, 'eval_runtime': 1.8421, 'eval_samples_per_second': 423.965, 'eval_steps_per_second': 13.571, 'epoch': 2.0}
+ 40%|██████████████████████████████████████████████                                                                     | 782/1955 [01:48<01:59,  9.79it/s]
+================================================================================
+📊 EPOCH 2 COMPLETED - METRICS COMPARISON
+================================================================================
+{'train_loss': 0.28182315826416016, 'train_accuracy': 0.8908974564069749, 'train_f1': 0.8899495390268904, 'train_precision': 0.8929860722627109, 'train_recall': 0.8908974564069749, 'train_runtime': 14.7425, 'train_samples_per_second': 424.012, 'train_steps_per_second': 13.295, 'epoch': 2.0}
+ 40%|██████████████████████████████████████████████                                                                     | 782/1955 [02:03<01:59,  9.79it/s]
+Metric          Training     Validation   Difference
+-------------------------------------------------------
+Loss            0.2818       0.4097       -0.1279+++++
+Accuracy        0.8909       0.8451       0.0458++++++
+F1 Score        0.8899       0.8442       0.0458++++++
+Precision       0.8930       0.8462       0.0468++++++
+Recall          0.8909       0.8451       0.0458++++++
+
+✓ Good generalization (gap: 4.58%)
+================================================================================
+
+{'loss': 0.3167, 'grad_norm': 1.9779880046844482, 'learning_rate': 6.299727520435967e-05, 'epoch': 2.05}
+{'loss': 0.3371, 'grad_norm': 3.9424972534179688, 'learning_rate': 6.02724795640327e-05, 'epoch': 2.17}
+{'loss': 0.2729, 'grad_norm': 4.019717216491699, 'learning_rate': 5.754768392370572e-05, 'epoch': 2.3}
+{'loss': 0.3096, 'grad_norm': 11.71967601776123, 'learning_rate': 5.482288828337875e-05, 'epoch': 2.43}
+{'loss': 0.296, 'grad_norm': 3.787257432937622, 'learning_rate': 5.2098092643051774e-05, 'epoch': 2.56}
+{'loss': 0.2954, 'grad_norm': 4.686685085296631, 'learning_rate': 4.93732970027248e-05, 'epoch': 2.69}
+{'loss': 0.2876, 'grad_norm': 4.120792865753174, 'learning_rate': 4.6648501362397824e-05, 'epoch': 2.81}
+{'loss': 0.3084, 'grad_norm': 4.879384994506836, 'learning_rate': 4.392370572207085e-05, 'epoch': 2.94}
+{'eval_loss': 0.4270513355731964, 'eval_accuracy': 0.8565941101152369, 'eval_f1': 0.8571828877965225, 'eval_precision': 0.8612430512069079, 'eval_recall': 0.8565941101152369, 'eval_runtime': 1.9388, 'eval_samples_per_second': 402.829, 'eval_steps_per_second': 12.895, 'epoch': 3.0}
+ 60%|████████████████████████████████████████████████████████████████████▍                                             | 1173/1955 [02:58<01:56,  6.74it/s]
+================================================================================
+📊 EPOCH 3 COMPLETED - METRICS COMPARISON
+================================================================================
+{'train_loss': 0.2162579447031021, 'train_accuracy': 0.9198528235482323, 'train_f1': 0.9198553704741292, 'train_precision': 0.9210254953643437, 'train_recall': 0.9198528235482323, 'train_runtime': 14.869, 'train_samples_per_second': 420.405, 'train_steps_per_second': 13.182, 'epoch': 3.0}
+ 60%|████████████████████████████████████████████████████████████████████▍                                             | 1173/1955 [03:13<01:56,  6.74it/s]
+Metric          Training     Validation   Difference
+-------------------------------------------------------
+Loss            0.2163       0.4271       -0.2108+++++
+Accuracy        0.9199       0.8566       0.0633++++++
+F1 Score        0.9199       0.8572       0.0627++++++
+Precision       0.9210       0.8612       0.0598++++++
+Recall          0.9199       0.8566       0.0633++++++
+
+⚠️  Moderate gap (6.33%) - monitor for overfitting
+================================================================================
+
+{'loss': 0.2704, 'grad_norm': 3.6175615787506104, 'learning_rate': 4.119891008174387e-05, 'epoch': 3.07}
+{'loss': 0.2354, 'grad_norm': 5.250971794128418, 'learning_rate': 3.84741144414169e-05, 'epoch': 3.2}
+{'loss': 0.2561, 'grad_norm': 4.265546798706055, 'learning_rate': 3.5749318801089924e-05, 'epoch': 3.32}
+{'loss': 0.2233, 'grad_norm': 0.7391660809516907, 'learning_rate': 3.302452316076294e-05, 'epoch': 3.45}
+{'loss': 0.1939, 'grad_norm': 4.0962138175964355, 'learning_rate': 3.0299727520435967e-05, 'epoch': 3.58}
+{'loss': 0.2403, 'grad_norm': 6.7544050216674805, 'learning_rate': 2.7574931880108995e-05, 'epoch': 3.71}
+{'loss': 0.2594, 'grad_norm': 5.906267166137695, 'learning_rate': 2.4850136239782017e-05, 'epoch': 3.84}
+{'loss': 0.2504, 'grad_norm': 1.4155067205429077, 'learning_rate': 2.212534059945504e-05, 'epoch': 3.96}
+{'eval_loss': 0.4439634382724762, 'eval_accuracy': 0.852752880921895, 'eval_f1': 0.8532211261826868, 'eval_precision': 0.8556293246869309, 'eval_recall': 0.852752880921895, 'eval_runtime': 1.8884, 'eval_samples_per_second': 413.583, 'eval_steps_per_second': 13.239, 'epoch': 4.0}
+ 80%|███████████████████████████████████████████████████████████████████████████████████████████▏                      | 1564/1955 [04:01<00:45,  8.51it/s]
+================================================================================
+📊 EPOCH 4 COMPLETED - METRICS COMPARISON
+================================================================================
+{'train_loss': 0.16351205110549927, 'train_accuracy': 0.9404895216765318, 'train_f1': 0.9403976947667753, 'train_precision': 0.9404770348551532, 'train_recall': 0.9404895216765318, 'train_runtime': 40.5962, 'train_samples_per_second': 153.98, 'train_steps_per_second': 4.828, 'epoch': 4.0}
+ 80%|███████████████████████████████████████████████████████████████████████████████████████████▏                      | 1564/1955 [04:42<00:45,  8.51it/s]
+Metric          Training     Validation   Difference
+-------------------------------------------------------
+Loss            0.1635       0.4440       -0.2805+++++
+Accuracy        0.9405       0.8528       0.0877++++++
+F1 Score        0.9404       0.8532       0.0872++++++
+Precision       0.9405       0.8556       0.0848++++++
+Recall          0.9405       0.8528       0.0877++++++
+
+⚠️  Moderate gap (8.77%) - monitor for overfitting
+================================================================================
+
+{'loss': 0.2114, 'grad_norm': 4.025143623352051, 'learning_rate': 1.9400544959128066e-05, 'epoch': 4.09}
+{'loss': 0.2016, 'grad_norm': 3.872880458831787, 'learning_rate': 1.667574931880109e-05, 'epoch': 4.22}
+{'loss': 0.2127, 'grad_norm': 4.166988849639893, 'learning_rate': 1.3950953678474116e-05, 'epoch': 4.35}
+{'loss': 0.1397, 'grad_norm': 1.474958896636963, 'learning_rate': 1.122615803814714e-05, 'epoch': 4.48}
+{'loss': 0.2489, 'grad_norm': 5.503575325012207, 'learning_rate': 8.501362397820165e-06, 'epoch': 4.6}
+{'loss': 0.1838, 'grad_norm': 5.053923606872559, 'learning_rate': 5.776566757493189e-06, 'epoch': 4.73}
+{'loss': 0.1721, 'grad_norm': 1.2233715057373047, 'learning_rate': 3.0517711171662127e-06, 'epoch': 4.86}
+{'loss': 0.198, 'grad_norm': 9.180121421813965, 'learning_rate': 3.269754768392371e-07, 'epoch': 4.99}
+{'eval_loss': 0.46806463599205017, 'eval_accuracy': 0.8553137003841229, 'eval_f1': 0.8555969092094929, 'eval_precision': 0.8565634563325383, 'eval_recall': 0.8553137003841229, 'eval_runtime': 2.0666, 'eval_samples_per_second': 377.921, 'eval_steps_per_second': 12.097, 'epoch': 5.0}
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1955/1955 [07:19<00:00, 10.10it/s]
+================================================================================
+📊 EPOCH 5 COMPLETED - METRICS COMPARISON
+================================================================================
+{'train_loss': 0.14807209372520447, 'train_accuracy': 0.9478483442649176, 'train_f1': 0.9476752358227014, 'train_precision': 0.9479803389282875, 'train_recall': 0.9478483442649176, 'train_runtime': 82.283, 'train_samples_per_second': 75.97, 'train_steps_per_second': 2.382, 'epoch': 5.0}
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1955/1955 [08:41<00:00, 10.10it/s]
+Metric          Training     Validation   Difference
+-------------------------------------------------------
+Loss            0.1481       0.4681       -0.3200+++++
+Accuracy        0.9478       0.8553       0.0925++++++
+F1 Score        0.9477       0.8556       0.0921++++++
+Precision       0.9480       0.8566       0.0914++++++
+Recall          0.9478       0.8553       0.0925++++++
+
+⚠️  Moderate gap (9.25%) - monitor for overfitting
+================================================================================
+
+{'train_runtime': 522.2845, 'train_samples_per_second': 59.843, 'train_steps_per_second': 3.743, 'train_loss': 0.3439448689255873, 'epoch': 5.0}
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1955/1955 [08:42<00:00,  3.74it/s]
+Evaluating on test set...
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:07<00:00,  3.27it/s]
+
+================================================================================
+📊 EPOCH 5 COMPLETED - METRICS COMPARISON
+================================================================================
+100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 196/196 [00:52<00:00,  3.74it/s]
+
+Metric          Training     Validation   Difference
+-------------------------------------------------------
+Loss            0.2163       0.3751       -0.1589+++++
+Accuracy        0.9199       0.8568       0.0631++++++
+F1 Score        0.9199       0.8570       0.0629++++++
+Precision       0.9210       0.8600       0.0610++++++
+Recall          0.9199       0.8568       0.0631++++++
+
+⚠️  Moderate gap (6.31%) - monitor for overfitting
+================================================================================

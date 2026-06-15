@@ -1,0 +1,41 @@
+# --- PYTHON CACHE ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- PYTHON ENVIRONMENTS ---
+.env
+.venv
+venv/
+env/
+ENV/
+
+# --- PACKAGE / BUILD OUTPUT ---
+build/
+dist/
+sdist/
+*.egg-info/
+*.egg
+
+# --- PYTHON TOOLS ---
+.ipynb_checkpoints/
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# --- EDITOR / IDE ---
+.vscode/
+.idea/
+
+# --- LOGS ---
+*.log
+
+# --- SYSTEM FILES ---
+.DS_Store
+Thumbs.db
+
+# --- PROJECT SPECIFIC ---
+*.pdf
