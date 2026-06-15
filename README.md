@@ -1,11 +1,9 @@
 # 📈 FinTurkBERT: Domain-Adaptive Pretraining and Sentiment Analysis for Turkish Financial Texts
 
-FinTurkBERT is a domain-specific Natural Language Processing (NLP) project that implements **Domain-Adaptive Pretraining (DAPT)** and **Task-Adaptive Pretraining (TAPT)** on Turkish financial news, followed by sentiment analysis fine-tuning using Low-Rank Adaptation (LoRA).
+> [!NOTE]
+> This project was developed as a term project for the **YZV302 - Deep Learning** course at Istanbul Technical University (ITU) together with [Deniz Topal](https://github.com/Deniztpl) and [Faruk Akyol](https://github.com/faruk-akyol).
 
-Developed together by:
-- [Deniz Topal](https://github.com/Deniztpl)
-- [Furkan Yasir Göksu](https://github.com/furkngoksu)
-- [Faruk Akyol](https://github.com/faruk-akyol)
+FinTurkBERT is a domain-specific Natural Language Processing (NLP) project that implements **Domain-Adaptive Pretraining (DAPT)** and **Task-Adaptive Pretraining (TAPT)** on Turkish financial news, followed by sentiment analysis fine-tuning using Low-Rank Adaptation (LoRA).
 
 ---
 
