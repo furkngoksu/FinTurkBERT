@@ -8,15 +8,7 @@ The full news corpus and labeled research split are stored separately from this 
 
 ## Synthetic diagnostics
 
-`evaluation/generate_benchmark_dataset.py` and `evaluation/generate_phrasebank_synthetic.py` generate scenario-based synthetic examples locally. CSV and JSONL outputs are ignored by Git. These are separate from the research test split; their metrics are not the paper's test results.
-
-## Working directories
-
-- `evaluation/data/`: generated diagnostics and local inputs.
-- `evaluation/reports/`: predictions, mismatches, metrics, HTML reports, and figures.
-- `evaluation/models/`: downloaded checkpoints.
-
-Evaluation commands write their outputs to these directories. Keep source datasets separate from generated predictions and reports.
+`evaluation/generate_benchmark_dataset.py` and `evaluation/generate_phrasebank_synthetic.py` generate scenario-based synthetic examples when run locally. Generated datasets, evaluation reports, and downloaded model weights are not included in the repository. The synthetic examples are separate from the research test split.
 
 ## Research files
 
