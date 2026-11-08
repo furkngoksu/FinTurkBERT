@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Turkish financial sentence curation
+TR Finance Curation Pipeline (single-file demo)
 
 This file merges THREE small, rule-based scripts into ONE coherent CLI tool:
 
@@ -22,27 +22,31 @@ This file merges THREE small, rule-based scripts into ONE coherent CLI tool:
    - Keep only items whose feature flags contain at least N True values
    - Output: JSONL (e.g., more "high-signal" subset)
 
+Why one file?
+- Easy to demo on stage: `python tr_finance_pipeline_demo.py run-all ...`
+- No imports across files; every stage is visible in one place.
+
 ---------------------------------------------------------------------------
-Example commands (from training/)
+Quick demo commands
 
 # Stage 1 only:
-python prepare_corpus.py curate \
+python tr_finance_pipeline_demo.py curate \
   --input news.jsonl --output curated_candidates.jsonl --format jsonl \
   --lex-dir lex_tr_fin --use-stanza --use-morph --enable-simhash \
   --max-per-bucket 0
 
 # Stage 2 only (downsample to 20k):
-python prepare_corpus.py downsample \
+python tr_finance_pipeline_demo.py downsample \
   --input curated_candidates.jsonl --output curated_final_20000.jsonl \
   --total-target 20000 --max-per-template 3
 
 # Stage 3 only (keep >=4 true feature flags):
-python prepare_corpus.py filter-features \
+python tr_finance_pipeline_demo.py filter-features \
   --input curated_final_20000.jsonl --output curated_final_20k_min4true.jsonl \
   --min-true 4
 
 # Full pipeline in one shot (creates intermediate outputs):
-python prepare_corpus.py run-all \
+python tr_finance_pipeline_demo.py run-all \
   --input news.jsonl --format jsonl --workdir ./out_demo \
   --total-target 20000 --max-per-template 3 --min-true 4 \
   --lex-dir lex_tr_fin --use-stanza --use-morph --enable-simhash
@@ -74,9 +78,15 @@ from pathlib import Path
 from typing import Dict, Iterable, Iterator, List, Optional, Set, Tuple
 
 # ---------------------------------------------------------------------------
-# Progress reporting
+# Optional progress bar (tqdm)
 # ---------------------------------------------------------------------------
-from tqdm import tqdm
+try:
+    from tqdm import tqdm
+except ImportError:
+    def tqdm(iterable=None, total=None, desc=None, unit=None, disable=False, **kwargs):
+        if iterable is None:
+            return range(total) if total else []
+        return iterable
 
 # =============================================================================
 # Stage 1 — Lexicon-gated sentence curation
@@ -989,8 +999,8 @@ def run_all(args: argparse.Namespace) -> None:
 
 def build_cli() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(
-        prog="prepare_corpus.py",
-        description="Curate, downsample, and filter Turkish financial sentences."
+        prog="tr_finance_pipeline_demo.py",
+        description="Single-file demo: TR finance curation -> downsample -> feature-filter (no LLM)."
     )
     sub = ap.add_subparsers(dest="cmd", required=True)
 
@@ -1019,7 +1029,7 @@ def build_cli() -> argparse.ArgumentParser:
     p1.add_argument("--simhash-threshold", type=int, default=3)
     p1.add_argument("--simhash-band-bits", type=int, default=16)
 
-    p1.add_argument("--workers", type=int, default=1, help="Worker count; use 1 for reproducible sampling")
+    p1.add_argument("--workers", type=int, default=None, help="Thread workers (default: CPU count)")
     p1.set_defaults(_fn=run_stage1_curate)
 
     # -------- Stage 2: downsample --------
@@ -1056,7 +1066,7 @@ def build_cli() -> argparse.ArgumentParser:
     p4.add_argument("--enable-simhash", action="store_true")
     p4.add_argument("--simhash-threshold", type=int, default=3)
     p4.add_argument("--simhash-band-bits", type=int, default=16)
-    p4.add_argument("--workers", type=int, default=1)
+    p4.add_argument("--workers", type=int, default=None)
 
     p4.add_argument("--total-target", type=int, default=20000)
     p4.add_argument("--max-per-template", type=int, default=3)

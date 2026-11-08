@@ -108,7 +108,8 @@ def compute_metrics(rows: list[dict]) -> dict:
             "f1": round_metric(f1),
             "support": support,
         }
-        f1_values.append(f1)
+        if support > 0:
+            f1_values.append(f1)
 
     return {
         "count": total,
@@ -161,8 +162,11 @@ def attach_predictions(dataset_rows: list[dict], prediction_rows: list[dict]) ->
     return enriched_rows
 
 
-def write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
+def write_csv(path: Path, rows: list[dict]) -> None:
+    if not rows:
+        return
     path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = list(rows[0].keys())
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
@@ -239,9 +243,8 @@ def main() -> None:
         "mismatch_count": len(mismatches),
     }
 
-    fieldnames = list(enriched_rows[0])
-    write_csv(Path(args.predictions_out), enriched_rows, fieldnames)
-    write_csv(Path(args.mismatches_out), mismatches, fieldnames)
+    write_csv(Path(args.predictions_out), enriched_rows)
+    write_csv(Path(args.mismatches_out), mismatches)
     write_json(Path(args.summary_out), summary)
     print_summary(summary, mismatches)
 

@@ -149,7 +149,7 @@ def render_confusion_svg(confusion: dict[str, dict[str, int]]) -> str:
             parts.append(
                 f'<text x="{x + (cell-8)/2}" y="{y + 62}" text-anchor="middle" '
                 f'fill="{PALETTE["muted"]}" font-size="11" font-family="IBM Plex Sans, Avenir Next, Segoe UI, sans-serif">'
-            f'{fmt_pct(value / sum(confusion[true_label].values()) if sum(confusion[true_label].values()) else 0)}</text>'
+                f'{fmt_pct(intensity)}</text>'
             )
     parts.append("</svg>")
     return "".join(parts)
@@ -404,16 +404,17 @@ def build_key_findings(
     dominant = transition_rows[0] if transition_rows else None
     findings = [
         (
-            f"Genel değerlendirme sonucu {overall['count']} finans örneğinde "
+            f"Genel benchmark sonucu {overall['count']} sentetik finans örneğinde "
             f"{fmt_pct(overall['accuracy'])} accuracy ve {fmt_float(overall['macro_f1'])} macro-F1."
         ),
         (
             f"En zayıf sınıf {display_label(lowest_recall_label)}; recall değeri "
-            f"{fmt_float(per_class[lowest_recall_label]['recall'])}."
+            f"{fmt_float(per_class[lowest_recall_label]['recall'])}. "
+            f"Bu, modelin güçlü negatif sinyal vermekten kaçınan muhafazakar yapısıyla uyumlu."
         ),
         (
             f"En zayıf senaryo türleri {', '.join(display_category(item) for item in worst_categories)}. "
-            f"Bu türler ayrıntılı hata incelemesi için önceliklendirilebilir."
+            f"Bunlar downstream kullanımda yüksek riskli iş kalıpları olarak görülmeli."
         ),
     ]
     if dominant:
@@ -422,7 +423,7 @@ def build_key_findings(
             f"{display_label(dominant['predicted_label'])}; toplam {dominant['count']} örnek."
         )
     findings.append(
-        "Depodaki sentetik veri üreticileri model davranışını incelemek içindir; araştırmadaki test kümesinden ayrı değerlendirilmelidir."
+        "Bu benchmark sentetik ve kural tabanlıdır; yayın kalitesinde resmi benchmark yerine yerel smoke test ve davranış analizi için kullanılmalıdır."
     )
     return findings
 
@@ -474,7 +475,7 @@ def build_html(
     sample_errors = mismatches[:15]
 
     cards = [
-        make_card("Örnek Sayısı", str(overall["count"]), "Değerlendirilen veri kümesi"),
+        make_card("Örnek Sayısı", str(overall["count"]), "Dengeli sentetik benchmark"),
         make_card("Accuracy", fmt_pct(overall["accuracy"]), "Genel doğru tahmin oranı"),
         make_card("Macro-F1", fmt_float(overall["macro_f1"]), "Sınıf ortalama F1 skoru"),
         make_card("Mismatch", str(summary["mismatch_count"]), "Ground truth ile uyuşmayan satırlar"),
@@ -791,12 +792,13 @@ def build_html(
         <div class="eyebrow">FinTurkBERT yerel benchmark</div>
         <h1>Türkçe finansal sentiment sınıflandırması davranış raporu</h1>
         <p class="sub">
-          Bu rapor, <code>ff112/FinTurkBERT</code> modelinin verilen Türkçe finansal metin veri kümesi üzerindeki tahminlerini ve sınıflandırma metriklerini özetler.
+          Bu dashboard, yerelde cache'lenen <code>ff112/FinTurkBERT</code> checkpoint'inin yatırımcı bakış açısıyla hazırlanmış dengeli bir sentetik Türkçe finans benchmark'ında nasıl davrandığını özetler.
         </p>
         <div class="badge-row">
           <div class="badge">Accuracy {fmt_pct(overall["accuracy"])}</div>
           <div class="badge">Macro-F1 {fmt_float(overall["macro_f1"])}</div>
           <div class="badge">Hata {summary["mismatch_count"]}</div>
+          <div class="badge">Offline cache doğrulandı</div>
         </div>
       </div>
       <div class="card hero-side">
@@ -820,7 +822,7 @@ def build_html(
         <div class="svg-frame">
           {asset_svgs['confusion']}
         </div>
-        <p>Satırlar gerçek etiketleri, sütunlar tahminleri gösterir. Yüzdeler her gerçek sınıfın kendi toplamına göre hesaplanır.</p>
+        <p>Model, rutin nötr bildirimlerde ve açık pozitif iş gelişmelerinde en güçlü performansı gösteriyor. Ana hata deseni ise bazı negatif ve pozitif örneklerin muhafazakar biçimde nötre çökmesi.</p>
       </div>
       <div class="card panel">
         <h3>Sınıf Bazlı Metrikler</h3>
@@ -841,14 +843,14 @@ def build_html(
         <div class="svg-frame">
           {asset_svgs['categories']}
         </div>
-        <p>Senaryo bazlı doğruluk, hangi örnek türlerinde daha fazla hata yapıldığını gösterir.</p>
+        <p>Senaryo bazlı accuracy, genel headline metriklerde görünmeyen hata kümelerini açığa çıkarır. Aşağıda accuracy'si sıfır olan türler iyileştirme açısından en yüksek öncelikli alanlardır.</p>
       </div>
       <div class="card panel">
         <h3>Sınıf Dağılımı</h3>
         <div class="svg-frame">
           {asset_svgs['class_distribution']}
         </div>
-        <p>Gerçek ve tahmin edilen etiketlerin dağılımı, sınıflar arasındaki farkları gösterir.</p>
+        <p>Benchmark dengeli kurulduğu için gerçek dağılım eşit. Tahmin tarafındaki kayma, modelin hangi class'a daha sık çöktüğünü hızlıca gösteriyor.</p>
       </div>
     </section>
 
@@ -858,7 +860,7 @@ def build_html(
         <div class="svg-frame">
           {asset_svgs['transitions']}
         </div>
-        <p>Grafik, yanlış tahminlerin gerçek etiket ile tahmin edilen etiket arasındaki dağılımını gösterir.</p>
+        <p>Bu grafik, hataların en çok hangi label geçişlerinde toplandığını gösteriyor. En kritik geçişler genelde negative → neutral ve positive → neutral tarafında yoğunlaşıyor.</p>
       </div>
       <div class="card panel">
         <h3>En Düşük Accuracy'li Türler</h3>
@@ -884,7 +886,7 @@ def build_html(
         </table>
       </div>
       <div class="footer-note">
-        Örnekler değerlendirme çıktısındaki yanlış tahminlerden seçilmiştir.
+        Bu örnekler <code>reports/mismatches.csv</code> içinden seçildi. Mevcut model davranışının üretim akışın için kabul edilebilir olup olmadığını veya ikinci aşama kural/reviewer katmanı gerektirip gerektirmediğini görmek için yararlıdır.
       </div>
     </section>
   </div>

@@ -1,5 +1,9 @@
+aiohttp==3.9.1
+beautifulsoup4==4.12.2
+lxml==4.9.3
+aiofiles==23.2.1
 torch
-transformers>=4.41,<5
+transformers
 datasets
 peft
 accelerate
@@ -8,8 +12,6 @@ scikit-learn
 PyYAML
 openai
 python-dotenv
+datasketch
 matplotlib
-seaborn
-nltk
-tqdm
 notebook

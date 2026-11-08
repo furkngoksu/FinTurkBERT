@@ -18,10 +18,11 @@ The full news corpus and labeled research split are stored separately from this 
 
 Evaluation commands write their outputs to these directories. Keep source datasets separate from generated predictions and reports.
 
-## Training and evaluation
+## Research files
 
-Fine-tuning is configured in `configs/finetune.yaml` and run with `training/train.py`. Supply a JSONL sentiment dataset with `text` and integer `label` fields: negative = 0, neutral = 1, positive = 2. The script creates stratified training, validation, and test splits with a fixed seed. Optional task-adaptive pretraining uses only the training split. The training script reports weighted F1; the diagnostic evaluator reports macro F1 across the three sentiment classes.
+- `pretraining/DL_project_splitting.ipynb`: the original DAPT experiment notebook.
+- `training/all_code.py`: the original LoRA sentiment fine-tuning script; it expects a local `config.yaml` and labeled JSONL data.
+- `training/tr_finance_pipeline_demo.py`: financial sentence curation and sampling.
+- `training/translator.py`: financial text localization using the OpenAI API.
 
-`pretraining/domain_pretraining.ipynb` expects a JSON array of news documents with `content` and `url` fields. Run it from `pretraining/`; the default input is `../data/financial_news.json`. It splits documents into 90% training, 5% validation, and 5% test before sentence segmentation and packing. Validation is used for model selection; test data is reserved for final evaluation. Paired MLM evaluations reset the random seed to use matching masks.
-
-The README results describe the original experiments, using three epochs, LoRA rank 16, and dropout 0.20. Current scripts include subsequent workflow corrections. Reproducing the reported scores requires the original data, splits, and checkpoints; new runs should be reported separately.
+Sentiment training records use `text` and integer `label` fields: negative = 0, neutral = 1, positive = 2. The full research datasets and experiment configurations are not bundled with the repository. The README reports the original experiment results.

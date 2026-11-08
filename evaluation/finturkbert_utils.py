@@ -1,5 +1,9 @@
 from pathlib import Path
 
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+
 MODEL_ID = "ff112/FinTurkBERT"
 LABELS = ["negative", "neutral", "positive"]
 ID2LABEL = dict(enumerate(LABELS))
@@ -48,8 +52,6 @@ def tr_category(category: str) -> str:
 
 
 def load_model(cache_dir: str):
-    from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
     cache_path = Path(cache_dir)
     cache_path.mkdir(parents=True, exist_ok=True)
 
@@ -66,11 +68,9 @@ def predict_texts(
     texts: list[str],
     tokenizer,
     model,
-    max_length: int = 96,
+    max_length: int = 64,
     batch_size: int = 16,
 ):
-    import torch
-
     rows = []
     for start_idx in range(0, len(texts), batch_size):
         batch_texts = texts[start_idx : start_idx + batch_size]

@@ -9,6 +9,13 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
+# Initialize OpenAI client with API key from environment
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("OPENAI_API_KEY environment variable is not set")
+
+client = OpenAI(api_key=api_key)
+
 # -----------------------------
 # Local FX table (used by tool)
 # -----------------------------
@@ -189,7 +196,6 @@ def run_one(text: str, model: str = None) -> tuple[str, dict]:
     Tool-loop safe translation.
     Returns: (translated_text, token_info_dict)
     """
-    client = OpenAI()
     if model is None:
         model = os.getenv("OPENAI_MODEL", "gpt-5-mini")
 
@@ -262,10 +268,10 @@ def run_one(text: str, model: str = None) -> tuple[str, dict]:
                 "output": json.dumps(tool_out, ensure_ascii=False),
             })
 
-def process_jsonl(input_file: str, output_file: str, n: int = None, start_index: int = 0):
+def process_jsonl(input_file: str, n: int = None, start_index: int = 0):
     """
     Process a JSONL file, translate text fields, and add 'translated_text' key.
-    Writes translated records to a separate output file.
+    Writes back to the same file.
     
     Args:
         input_file: Path to input JSONL file
@@ -374,8 +380,8 @@ def process_jsonl(input_file: str, output_file: str, n: int = None, start_index:
             print(f"\n[Row {actual_row} | {i}/{items_to_process}] ⚠ No text field found to translate", flush=True)
             item['translated_text'] = None
 
-    # Keep all records, including unprocessed ones, in the output.
-    with open(output_file, 'w', encoding='utf-8') as f:
+    # Write back to the same file (write all items, including unprocessed ones)
+    with open(input_file, 'w', encoding='utf-8') as f:
         for item in items:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
 
@@ -386,9 +392,9 @@ def process_jsonl(input_file: str, output_file: str, n: int = None, start_index:
     print(f"Total input tokens:     {total_input_tokens:,}")
     print(f"Total output tokens:    {total_output_tokens:,}")
     print(f"Total thinking tokens:  {total_thinking_tokens:,}")
-    print(f"Total tokens:           {total_input_tokens + total_output_tokens:,}")
+    print(f"Total tokens:           {total_input_tokens + total_output_tokens + total_thinking_tokens:,}")
     print(f"Total cost:             ${total_cost:.6f} (${total_cost:.2f})")
-    print(f"\n✓ Translation complete! Output saved to {output_file}")
+    print(f"\n✓ Translation complete! Output saved to {input_file}")
 
 def main():
     parser = argparse.ArgumentParser(
@@ -413,16 +419,13 @@ def main():
         default=0,
         help='Starting row index (0-based) to begin translation from (default: 0)'
     )
-    parser.add_argument('--output', required=True, help='Output JSONL path; input is preserved')
     args = parser.parse_args()
 
     if not os.path.exists(args.input_file):
         print(f"Error: Input file '{args.input_file}' not found")
         return
 
-    if os.path.abspath(args.input_file) == os.path.abspath(args.output):
-        parser.error("--output must differ from the input file")
-    process_jsonl(args.input_file, args.output, args.number, args.start)
+    process_jsonl(args.input_file, args.number, args.start)
 
 if __name__ == '__main__':
     main()
