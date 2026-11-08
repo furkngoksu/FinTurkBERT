@@ -7,8 +7,6 @@
   <img alt="Transformers" src="https://img.shields.io/badge/Transformers-FF5722?style=for-the-badge&logo=huggingface&logoColor=white" />
 </p>
 
-[Model & model card](https://huggingface.co/ff112/FinTurkBERT) · [Pretraining notebook](pretraining/DL_project_splitting.ipynb) · [Presentation](docs/FinTurkBERT-Presentation.pptx)
-
 FinTurkBERT is a project for analyzing sentiment in Turkish financial text. It classifies statements from financial news, company announcements, and market commentary as positive, negative, or neutral from an investor's perspective.
 
 The focus is on the financial meaning of a statement, including changes in business performance, earnings, and risk. FinTurkBERT can support financial news monitoring, company disclosure analysis, and research on Turkish financial language.
