@@ -39,3 +39,17 @@ Thumbs.db
 
 # --- PROJECT SPECIFIC ---
 *.pdf
+
+# Local data and generated experiment outputs
+/evaluation/data/
+/evaluation/reports/
+/evaluation/models/
+/evaluation/RESULTS-BERTS.txt
+/evaluation/last_log.txt
+/evaluation/llm_results.zip
+models/
+checkpoints/
+*.safetensors
+*.pt
+*.pth
+*.bin

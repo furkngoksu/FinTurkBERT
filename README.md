@@ -1,79 +1,74 @@
-# 📈 FinTurkBERT: Domain-Adaptive Pretraining and Sentiment Analysis for Turkish Financial Texts
+# FinTurkBERT
 
-FinTurkBERT is a domain-specific Natural Language Processing (NLP) project that implements **Domain-Adaptive Pretraining (DAPT)** and **Task-Adaptive Pretraining (TAPT)** on Turkish financial news, followed by sentiment analysis fine-tuning using Low-Rank Adaptation (LoRA).
+Domain adaptation and sentiment analysis for Turkish financial text. This collaborative project adapts BERTurk to financial language through continued pretraining, then fine-tunes it with LoRA to classify negative, neutral, and positive sentiment.
 
----
+**Authors:** Deniz Topal, Furkan Yasir Göksu, Faruk Akyol — Istanbul Technical University.
 
-<p align="left">
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
-  <img src="https://img.shields.io/badge/Hugging_Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" />
-  <img src="https://img.shields.io/badge/Transformers-FF5722?style=for-the-badge&logo=huggingface&logoColor=white" />
-</p>
+## Research pipeline
 
----
+1. **Corpus preparation:** collect Turkish financial news, filter financial content, remove exact and near duplicates, and pack complete sentences into training sequences.
+2. **Domain adaptation:** continue masked language model pretraining on the financial corpus and evaluate on Turkish Wikipedia to examine general-language retention.
+3. **Sentiment data:** translate and financially localize Financial PhraseBank and FiQA examples, and curate additional annotated Turkish financial sentences.
+4. **Fine-tuning:** use LoRA and compare domain-adapted checkpoints with general Turkish BERT models.
 
-## 📂 Project Structure
+## Reported results
 
-```
-├── docs/
-│   ├── FinTurkBERT-Presentation.pptx          # Project presentation slides
-│   └── FinTurkBERT-Report.pdf                # Comprehensive academic report
-├── dl-dapt/
-│   └── DL_project_splitting.ipynb            # Dataset splitting & DAPT pre-processing (clean outputs)
-├── dl-fine-tune/
-│   ├── all_code.py                           # Full pipeline code for fine-tuning
-│   ├── tr_finance_pipeline_demo.py           # Demo pipeline execution script
-│   └── translator.py                         # LLM translation utilities for financial localization
-├── evaluation/
-│   ├── build_html_report.py                  # HTML report generator script
-│   ├── evaluate_finturkbert.py               # Evaluation runner for FinTurkBERT
-│   ├── finturkbert_utils.py                  # Utility functions for evaluation
-│   ├── generate_benchmark_dataset.py         # Benchmark dataset creation utility
-│   ├── generate_phrasebank_synthetic.py      # Synthetic data generator using GPT-4o
-│   ├── run_finturkbert.py                    # Sentiment classifier demo runner
-│   ├── RESULTS-BERTS.txt                     # Performance logs for models (redacted tokens)
-│   ├── last_log.txt                          # Evaluation execution logs
-│   ├── llm_results.zip                       # Zero-shot evaluation outputs from LLMs
-│   ├── data/                                 # Evaluation benchmark and synthetic datasets
-│   └── reports/                              # Generated HTML evaluation reports and SVG graphs
-├── requirements.txt                          # List of python package dependencies
-└── README.md                                 # Project documentation
+The report uses a sentiment dataset of 7,814 labeled sentences. Under the same regularized configuration (LoRA rank 16, dropout 0.20, three epochs), it reports:
+
+| Model | Test accuracy | Test F1 |
+| --- | ---: | ---: |
+| BERTurk, uncased | 80.59% | 79.17% |
+| BERTurk, cased | 81.82% | 81.83% |
+| FinTurkBERT DAPT v2 | 84.40% | 83.52% |
+| FinTurkBERT DAPT v3 | 82.71% | 82.73% |
+
+DAPT v2 improves accuracy by 2.58 percentage points over cased BERTurk in this configuration. These are the report's held-out test results; the synthetic diagnostics generated here are separate evaluations.
+
+## Repository layout
+
+```text
+dl-dapt/         Corpus preparation and DAPT experiment notebook
+dl-fine-tune/    Training, translation, and financial data preparation scripts
+evaluation/     Inference, synthetic diagnostics, metrics, and HTML report tools
+docs/           Presentation and research notes
 ```
 
----
+Datasets, checkpoints, logs, and generated reports are kept locally and excluded from version control. Existing script directories are retained so relative paths remain compatible.
 
-## 🚀 Key Project Stages
+## Setup
 
-### 1. Domain-Adaptive Pretraining (DAPT) (`dl-dapt/`)
-- A base Turkish BERT model (**BERTurk**) is adapted to the financial domain using an unlabeled corpus built from Turkish financial news websites.
-- **Pretraining Objective**: Masked Language Modeling (MLM).
-- **Catastrophic Forgetting Mitigation**: Evaluated on Turkish Wikipedia splits to ensure general language understanding is preserved while specializing in financial terminology.
+Use Python 3.10 or newer:
 
-### 2. Fine-Tuning & Financial Localization (`dl-fine-tune/`)
-- **Financial Localization Pipeline**: English sentiment analysis datasets (FIQA and Financial PhraseBank) are translated and localized into Turkish using a two-stage LLM pipeline (GPT-4o) ensuring currency conversions (USD ➔ TRY) and natural financial phrasing.
-- **Parameter-Efficient Fine-Tuning (PEFT)**: Built with **LoRA (Low-Rank Adaptation)** on attention layers to optimize training parameters (~0.3% trainable parameters) and avoid overfitting on a RTX 4060 GPU.
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-### 3. Evaluation & Results (`evaluation/`)
-- Models are benchmarked across multiple configurations (Baseline BERTurk vs. FinTurkBERT variants, LoRA ranks, and Zero-shot LLMs).
-- FinTurkBERT DAPT v2 achieves **84.40% test accuracy** and **83.52% F1 score** on Turkish financial sentiment tasks, significantly outperforming baseline LLMs (Qwen, Llama, Gemma, Mistral) and general-purpose BERTurk models.
-- Interactive HTML reports and performance visualization graphs are available under [evaluation/reports/](evaluation/reports/).
+For GPU training, install the PyTorch build appropriate for your CUDA environment. Translation scripts require your own `OPENAI_API_KEY` environment variable. Training scripts retain experiment-specific input paths; configure these for your local datasets before running them.
 
----
+## Run sentiment inference
 
-## 🛠️ Installation & Setup
+The utility downloads `ff112/FinTurkBERT` from Hugging Face:
 
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/furkngoksu/FinTurkBERT.git
-   cd FinTurkBERT
-   ```
+```bash
+python evaluation/run_finturkbert.py \
+  --cache-dir evaluation/models \
+  --max-length 96 \
+  --text "Şirketin net kârı geçen yılın aynı dönemine göre arttı."
+```
 
-2. **Install Dependencies**
-   Ensure Python 3.8+ and PyTorch (with GPU support if training) are set up. Run:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Generate and evaluate synthetic diagnostics
 
-3. **Explore Documentation**
-   Academic report details, dataset token distributions, and methodology can be found under the [docs/](docs/) folder.
+Run from `evaluation/` so default relative paths resolve correctly:
+
+```bash
+cd evaluation
+python generate_benchmark_dataset.py
+python evaluate_finturkbert.py
+python build_html_report.py
+```
+
+This creates local `data/` and `reports/` directories. A second generator is `generate_phrasebank_synthetic.py`. Both produce synthetic examples, not the original training corpus or the paper's held-out test set.
+
+See [data and experiment notes](docs/DATA_AND_EXPERIMENTS.md) for provenance and reproduction limits. The presentation is available in [docs](docs/).
