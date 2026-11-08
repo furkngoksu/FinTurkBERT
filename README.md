@@ -1,4 +1,11 @@
-# FinTurkBERT
+# FinTurkBERT: Turkish Financial Sentiment Analysis
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![Transformers](https://img.shields.io/badge/Transformers-FF5722?style=for-the-badge&logo=huggingface&logoColor=white)
+[![Hugging Face Model](https://img.shields.io/badge/Hugging_Face-Model-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/ff112/FinTurkBERT)
+
+[Model & model card](https://huggingface.co/ff112/FinTurkBERT) · [Pretraining notebook](pretraining/DL_project_splitting.ipynb) · [Presentation](docs/FinTurkBERT-Presentation.pptx)
 
 FinTurkBERT is a project for analyzing sentiment in Turkish financial text. It classifies statements from financial news, company announcements, and market commentary as positive, negative, or neutral from an investor's perspective.
 
