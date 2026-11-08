@@ -1,6 +1,10 @@
 # FinTurkBERT
 
-FinTurkBERT adapts BERTurk to Turkish financial text through domain-adaptive pretraining and LoRA fine-tuning. It classifies financial statements as negative, neutral, or positive.
+FinTurkBERT is a project for analyzing sentiment in Turkish financial text. It classifies statements from financial news, company announcements, and market commentary as positive, negative, or neutral from an investor's perspective.
+
+The focus is on the financial meaning of a statement, including changes in business performance, earnings, and risk. FinTurkBERT can support financial news monitoring, company disclosure analysis, and research on Turkish financial language.
+
+The model adapts BERTurk to financial text through domain-adaptive pretraining and LoRA fine-tuning.
 
 This repository contains the pretraining notebook, data preparation and fine-tuning scripts, and tools for running sentiment predictions and evaluation.
 
