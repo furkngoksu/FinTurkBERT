@@ -1,9 +1,11 @@
 # FinTurkBERT: Turkish Financial Sentiment Analysis
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-![Transformers](https://img.shields.io/badge/Transformers-FF5722?style=for-the-badge&logo=huggingface&logoColor=white)
-[![Hugging Face Model](https://img.shields.io/badge/Hugging_Face-Model-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/ff112/FinTurkBERT)
+<p align="left">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" />
+  <a href="https://huggingface.co/ff112/FinTurkBERT"><img alt="Hugging Face Model" src="https://img.shields.io/badge/Hugging_Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" /></a>
+  <img alt="Transformers" src="https://img.shields.io/badge/Transformers-FF5722?style=for-the-badge&logo=huggingface&logoColor=white" />
+</p>
 
 [Model & model card](https://huggingface.co/ff112/FinTurkBERT) · [Pretraining notebook](pretraining/DL_project_splitting.ipynb) · [Presentation](docs/FinTurkBERT-Presentation.pptx)
 
