@@ -23,7 +23,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--max-length",
         type=int,
-        default=64,
+        default=96,
         help="Maximum token length passed to the model.",
     )
     return parser.parse_args()

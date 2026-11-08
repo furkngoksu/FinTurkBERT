@@ -53,3 +53,12 @@ checkpoints/
 *.pt
 *.pth
 *.bin
+/data/
+/outputs/
+runs/
+eval/
+lex_tr_fin/
+lm_*_packed/
+train_sentences.json
+validation_sentences.json
+test_sentences.json

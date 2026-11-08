@@ -29,8 +29,9 @@ All rows use LoRA rank 16, dropout 0.20, and three training epochs. These result
 ## Repository layout
 
 ```text
-dl-dapt/         Corpus preparation and DAPT experiment notebook
-dl-fine-tune/    Training, translation, and financial data preparation scripts
+pretraining/    DAPT notebook: preparation, training, and MLM evaluation
+training/       Corpus curation, financial localization, and LoRA fine-tuning
+configs/        Fine-tuning and optional TAPT settings
 evaluation/     Inference, synthetic diagnostics, metrics, and HTML report tools
 docs/           Presentation and research notes
 ```
@@ -49,7 +50,25 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-For GPU training, install the PyTorch build appropriate for your CUDA environment. Translation scripts use an `OPENAI_API_KEY` environment variable. Training scripts require local datasets and experiment-specific paths to be configured before use.
+For GPU training, install the PyTorch build appropriate for your CUDA environment. The default configuration disables FP16 so it can also be used on CPU. Enable FP16 for compatible CUDA hardware. Private Hugging Face checkpoints can use the `HF_TOKEN` environment variable.
+
+## Training
+
+Place your labeled sentiment data at `data/sentiment.jsonl`:
+
+```json
+{"text": "Şirketin net kârı arttı.", "label": 2}
+```
+
+Labels are `0` (negative), `1` (neutral), and `2` (positive). Set the base or domain-adapted checkpoint in `configs/finetune.yaml`, then run from the repository root:
+
+```bash
+python training/train.py --config configs/finetune.yaml
+```
+
+The script saves LoRA adapters, tokenizer files, and metrics under `outputs/`. Optional TAPT uses training texts only. For financial corpus pretraining, open [the DAPT notebook](pretraining/domain_pretraining.ipynb) from `pretraining/` and follow its input and configuration cells.
+
+For corpus curation and translation commands, see [the training guide](docs/TRAINING.md).
 
 ## Run sentiment inference
 
@@ -79,3 +98,12 @@ The commands run from `evaluation/` and write to local `data/` and `reports/` di
 
 - [Project presentation](docs/FinTurkBERT-Presentation.pptx)
 - [Data sources and experiment notes](docs/DATA_AND_EXPERIMENTS.md)
+- [Training and data preparation](docs/TRAINING.md)
+
+## Checks
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+The checks cover data generation, sentence curation, token packing, evaluation metrics, and report generation. Model predictions are mocked in the evaluation workflow test; the checks do not retrain the model or establish its accuracy.

@@ -5,17 +5,19 @@ This file contains the complete pipeline for fine-tuning BERT with LoRA.
 It's structured like a Jupyter notebook but as a single executable Python file.
 
 Usage:
-    python all_code.py
+    python training/train.py --config configs/finetune.yaml
 
 Requirements:
-    - config.yaml file in the same directory
-    - data/combined.jsonl file with financial sentiment data
+    - A YAML training configuration
+    - A JSONL sentiment dataset with text and integer label fields
 """
 
 # =============================================================================
 # IMPORTS
 # =============================================================================
+import argparse
 import json
+import os
 import yaml
 from pathlib import Path
 from typing import Dict, List
@@ -33,6 +35,7 @@ from transformers import (
     Trainer,
     DataCollatorWithPadding,
     DataCollatorForLanguageModeling,
+    set_seed,
 )
 from peft import LoraConfig, get_peft_model
 from datasets import Dataset, DatasetDict
@@ -418,8 +421,11 @@ def main():
     print("STEP 1: LOADING CONFIGURATION")
     print("="*80)
     
-    config_path = Path("config.yaml")
+    parser = argparse.ArgumentParser(description="Fine-tune a Turkish BERT model with LoRA.")
+    parser.add_argument("--config", type=Path, default=Path("configs/finetune.yaml"))
+    config_path = parser.parse_args().config
     config = load_config(config_path)
+    set_seed(config['training']['seed'])
     
     # -------------------------------------------------------------------------
     # Step 2: Setup Output Directory
@@ -467,14 +473,7 @@ def main():
     print("="*80)
     
     # Check if authentication token is provided (for private models)
-    use_auth_token = config.get('model', {}).get('token', None)
-    if use_auth_token in [None, 'null', 'None', '']:
-        use_auth_token = None
-        print("No authentication token provided.")
-        print("If this is a private model, set token in config.yaml")
-    else:
-        print(f"Using authentication token for private model...")
-        print(f"Token starts with: {str(use_auth_token)[:10]}...")
+    use_auth_token = os.getenv("HF_TOKEN")
     
     # Load tokenizer
     print(f"\nLoading tokenizer from: {config['model']['name']}")
@@ -497,12 +496,8 @@ def main():
         
         print("TAPT is enabled. Running MLM on task texts...")
         
-        # Extract all texts from datasets (no labels needed for TAPT)
-        # Convert Dataset columns to lists before concatenation
-        all_texts = []
-        all_texts.extend(list(datasets['train'][config['data']['text_column']]))
-        all_texts.extend(list(datasets['validation'][config['data']['text_column']]))
-        all_texts.extend(list(datasets['test'][config['data']['text_column']]))
+        # Keep validation and test examples out of continued pretraining.
+        all_texts = list(datasets['train'][config['data']['text_column']])
         
         print(f"Using {len(all_texts)} texts for TAPT")
         
@@ -527,6 +522,8 @@ def main():
     model = AutoModelForSequenceClassification.from_pretrained(
         model_to_load,
         num_labels=config['model']['num_labels'],
+        id2label={0: "negative", 1: "neutral", 2: "positive"},
+        label2id={"negative": 0, "neutral": 1, "positive": 2},
         token=use_auth_token if model_to_load == config['model']['name'] else None
     )
     
@@ -684,6 +681,7 @@ def main():
     
     print("Running final evaluation on test set...")
     test_metrics = trainer.evaluate(tokenized_datasets['test'])
+    trainer.save_metrics("test", test_metrics)
     
     print("\nTest Set Results:")
     print("-" * 40)
@@ -713,8 +711,8 @@ def main():
     print("TRAINING PIPELINE COMPLETED SUCCESSFULLY!")
     print("="*80)
     print(f"\nModel saved to: {output_dir}")
-    print(f"\nYou can now use this model for inference with:")
-    print(f"  python src/inference.py --model_path {output_dir}")
+    print("The saved checkpoint contains LoRA adapters and a classification head.")
+    print("Load it with peft.AutoPeftModelForSequenceClassification.from_pretrained().")
     print("\n" + "="*80 + "\n")
 
 
