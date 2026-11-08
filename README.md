@@ -1,59 +1,26 @@
 # FinTurkBERT
 
-FinTurkBERT is a Turkish financial language model developed for sentiment analysis. It adapts BERTurk to financial news through domain-adaptive pretraining, followed by task-specific fine-tuning with LoRA. The model classifies financial statements as positive, negative, or neutral from an investor's perspective.
+FinTurkBERT adapts BERTurk to Turkish financial text through domain-adaptive pretraining and LoRA fine-tuning. It classifies financial statements as negative, neutral, or positive.
 
-**Authors:** Deniz Topal, Furkan Yasir Göksu, Faruk Akyol — Istanbul Technical University.
+This repository contains the pretraining notebook, data preparation and fine-tuning scripts, and tools for running sentiment predictions and evaluation.
 
-## Overview
+## Installation
 
-The project explores how domain-specific data and continued pretraining improve financial language understanding in Turkish. It covers the complete workflow from corpus preparation to sentiment classification and evaluation.
-
-- **Financial corpus:** news collected from Turkish financial sources, cleaned through domain filtering, deduplication, and sentence-level preprocessing.
-- **Domain adaptation:** masked language model pretraining on financial text, with additional evaluation on Turkish Wikipedia to assess general-language retention.
-- **Sentiment dataset:** 7,814 labeled sentences combining localized Financial PhraseBank and FiQA examples with curated Turkish financial text.
-- **Model training:** LoRA fine-tuning and experiments on model capacity and regularization.
-
-## Results
-
-FinTurkBERT DAPT v2 achieved **84.40% test accuracy** and **83.52 F1**, compared with **81.82% accuracy** for cased BERTurk under the same fine-tuning configuration.
-
-| Model | Test accuracy | Test F1 |
-| --- | ---: | ---: |
-| BERTurk, uncased | 80.59% | 79.17% |
-| BERTurk, cased | 81.82% | 81.83% |
-| FinTurkBERT DAPT v2 | 84.40% | 83.52% |
-| FinTurkBERT DAPT v3 | 82.71% | 82.73% |
-
-All rows use LoRA rank 16, dropout 0.20, and three training epochs. These results come from the project report's held-out sentiment test set. The repository also provides separate synthetic evaluation tools for examining model behavior.
-
-## Repository layout
-
-```text
-pretraining/    DAPT notebook: preparation, training, and MLM evaluation
-training/       Corpus curation, financial localization, and LoRA fine-tuning
-evaluation/     Inference, synthetic diagnostics, metrics, and HTML report tools
-docs/           Presentation and research notes
-```
-
-Datasets, model checkpoints, and generated outputs are excluded from version control. See the [data and experiment notes](docs/DATA_AND_EXPERIMENTS.md) for data sources and reproduction details.
-
-## Getting started
-
-Use Python 3.10 or newer:
+Use Python 3.10 or newer. From a terminal:
 
 ```bash
 git clone https://github.com/furkngoksu/FinTurkBERT.git
 cd FinTurkBERT
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install torch transformers
 ```
 
-For GPU training, install the PyTorch build appropriate for your CUDA environment. Translation scripts use an `OPENAI_API_KEY` environment variable. The research notebook and training scripts retain their original experiment setup; local datasets and configuration are required to run them.
+These dependencies cover the prediction and evaluation tools. See [research files and data](docs/DATA_AND_EXPERIMENTS.md) for the training scripts and notebook setup.
 
-## Run sentiment inference
+## Sentiment prediction
 
-Run the published [FinTurkBERT checkpoint](https://huggingface.co/ff112/FinTurkBERT) on a Turkish financial statement:
+From the repository root:
 
 ```bash
 python evaluation/run_finturkbert.py \
@@ -62,21 +29,50 @@ python evaluation/run_finturkbert.py \
   --text "Şirketin net kârı geçen yılın aynı dönemine göre arttı."
 ```
 
+The script downloads the [ff112/FinTurkBERT](https://huggingface.co/ff112/FinTurkBERT) checkpoint and prints a sentiment label and class probabilities. Repeat `--text` to process multiple statements.
+
 ## Evaluation
 
-Generate a synthetic benchmark, run model predictions, and produce an HTML report:
+From the repository root, generate a synthetic dataset and evaluate the model:
 
 ```bash
 cd evaluation
 python generate_benchmark_dataset.py
 python evaluate_finturkbert.py
+```
+
+The evaluator writes predictions, incorrect predictions, and aggregate metrics locally. To create an HTML report from a run containing incorrect predictions:
+
+```bash
 python build_html_report.py
 ```
 
-The commands run from `evaluation/` and write to local `data/` and `reports/` directories. `generate_phrasebank_synthetic.py` provides an additional set of financial sentiment scenarios. These synthetic datasets are intended for diagnostic evaluation and are separate from the research test set.
+The report is written to `reports/report.html`, relative to `evaluation/`. These synthetic evaluations are separate from the research test set used for the results below.
 
-## Documentation
+## Results
 
-- [Project presentation](docs/FinTurkBERT-Presentation.pptx)
-- [Data sources and experiment notes](docs/DATA_AND_EXPERIMENTS.md)
-- [Domain-adaptive pretraining notebook](pretraining/DL_project_splitting.ipynb)
+The project experiments reported the following held-out sentiment classification results. Each row uses three epochs, LoRA rank 16, and dropout 0.20.
+
+| Model | Accuracy (%) | F1 (%) |
+| --- | ---: | ---: |
+| BERTurk, uncased | 80.59 | 79.17 |
+| BERTurk, cased | 81.82 | 81.83 |
+| FinTurkBERT DAPT v2 | 84.40 | 83.52 |
+| FinTurkBERT DAPT v3 | 82.71 | 82.73 |
+
+This table compares research checkpoints. The downloadable checkpoint's [model card](https://huggingface.co/ff112/FinTurkBERT#evaluation-summary) reports a separate validation result.
+
+## Repository
+
+| Directory | Contents |
+| --- | --- |
+| [pretraining](pretraining/) | DAPT experiment notebook |
+| [training](training/) | Financial text curation, localization, and sentiment fine-tuning scripts |
+| [evaluation](evaluation/) | Model inference, synthetic data generators, metrics, and report tools |
+| [docs](docs/) | Project presentation and data notes |
+
+The research datasets and training configurations are not included. Data sources and file requirements are described in [the data notes](docs/DATA_AND_EXPERIMENTS.md). The [project presentation](docs/FinTurkBERT-Presentation.pptx) is also available.
+
+## Authors
+
+Deniz Topal, Furkan Yasir Göksu, and Faruk Akyol — Istanbul Technical University.
